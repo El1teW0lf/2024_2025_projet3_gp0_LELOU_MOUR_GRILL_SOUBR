@@ -11,9 +11,8 @@ def generate_map():
     # Fill the array with Tile objects
     for x in range(100):
         for y in range(100):
-            tile = Tile(x, y, random.choice(biomes)) 
-            tile.setup() # Keeping the tile variable
-            random_map[x, y] = tile.biome  # Storing the tile in the matrix
+            biome = random.choice(biomes)
+            random_map[x, y] = biome  # Storing the tile in the matrix
     
     return random_map
 
