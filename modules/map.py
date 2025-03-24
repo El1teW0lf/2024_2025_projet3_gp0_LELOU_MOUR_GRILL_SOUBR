@@ -1,4 +1,5 @@
 from modules.tile import Tile
+from modules.generation.generation import generate_perlin_noise
 import numpy as np
 
 class Map():
@@ -6,6 +7,8 @@ class Map():
         
         self.size = (100,100)
         self.map =  np.empty(self.size, dtype=object)
+        self.noise = generate_perlin_noise()
+        print(self.noise)
         self._populate_map()
 
     

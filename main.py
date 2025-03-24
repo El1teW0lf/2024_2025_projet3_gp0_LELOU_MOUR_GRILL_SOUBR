@@ -1,14 +1,6 @@
-<<<<<<< HEAD
 from modules.map import Map
 import pygame
 import numpy as np
-=======
-from modules.tile import Tile
-from modules.generation.generation import generate_map
-
-new_map = generate_map()
-print(new_map)
->>>>>>> 9dacb53f99e89c4158f67173d8c798e83c38f15f
 
 pygame.init()
 
