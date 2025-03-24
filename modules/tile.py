@@ -7,6 +7,7 @@ class Tile():
         self.x = x
         self.y = y
         self.biome = biome
+        self.color = biomes[self.biome]["color"]
 
     def _generate_ressources(self):
         self.mine_ressources = {}
