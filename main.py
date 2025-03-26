@@ -5,7 +5,7 @@ import numpy as np
 pygame.init()
 
 # Window size
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 800, 800
 CELL_SIZE = WIDTH // 100  # Adjust cell size to fit the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Not your life.")
@@ -34,6 +34,9 @@ def draw_grid():
 def update():
     screen.fill((0, 0, 0))  # Clear screen
     draw_grid()  # Draw the grid
+    tile_pos = (pygame.mouse.get_pos()[0]//CELL_SIZE,pygame.mouse.get_pos()[1]//CELL_SIZE)
+
+    game_map.map[tile_pos[0],tile_pos[1]].print_debug()
 
 def global_loop():
     global running

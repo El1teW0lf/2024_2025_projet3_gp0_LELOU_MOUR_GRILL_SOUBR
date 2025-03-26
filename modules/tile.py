@@ -29,7 +29,6 @@ class Tile():
         self._generate_other()
 
     def print_debug(self):
-        print(f"Tile {self.x} {self.y} {self.biome}")
-        print(f"ressources : {self.mine_ressources} {self.surface_ressources}")
-        print(f"population : {self.pop}")
-        print(f"temperature : {self.temp}")
+        print(f"Tile {self.x} {self.y} {self.biome} | "
+            f"Resources: {self.mine_ressources} {self.surface_ressources} | "
+            f"Population: {self.pop} | Temperature: {self.temp}")
