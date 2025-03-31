@@ -1,31 +1,30 @@
-stl
-solid cube_corner
-  facet normal 0.0 -1.0 0.0
-    outer loop
-      vertex 0.0 0.0 0.0
-      vertex 1.0 0.0 0.0
-      vertex 0.0 0.0 1.0
-    endloop
-  endfacet
-  facet normal 0.0 0.0 -1.0
-    outer loop
-      vertex 0.0 0.0 0.0
-      vertex 0.0 1.0 0.0
-      vertex 1.0 0.0 0.0
-    endloop
-  endfacet
-  facet normal -1.0 0.0 0.0
-    outer loop
-      vertex 0.0 0.0 0.0
-      vertex 0.0 0.0 1.0
-      vertex 0.0 1.0 0.0
-    endloop
-  endfacet
-  facet normal 0.577 0.577 0.577
-    outer loop
-      vertex 1.0 0.0 0.0
-      vertex 0.0 1.0 0.0
-      vertex 0.0 0.0 1.0
-    endloop
-  endfacet
-endsolid
+import trimesh
+
+def create_simple_soldier():
+    # Corps (cylindre)
+    body = trimesh.creation.cylinder(radius=0.3, height=1.2, sections=6)
+    body.apply_translation([0, 0, 0.6])
+
+    # Tête (sphère low poly)
+    head = trimesh.creation.icosphere(subdivisions=1, radius=0.25)
+    head.apply_translation([0, 0, 1.5])
+
+    # Jambes (deux cylindres)
+    leg_left = trimesh.creation.cylinder(radius=0.15, height=0.9, sections=6)
+    leg_left.apply_translation([-0.2, 0, 0.45])
+    leg_right = trimesh.creation.cylinder(radius=0.15, height=0.9, sections=6)
+    leg_right.apply_translation([0.2, 0, 0.45])
+
+    # Fusionner toutes les parties
+    soldier = trimesh.util.concatenate([body, head, leg_left, leg_right])
+    
+    return soldier
+
+# Générer le modèle
+soldier_model = create_simple_soldier()
+
+# Sauvegarde en STL
+stl_filename = "soldier_simple.stl"
+soldier_model.export(stl_filename)
+
+print(f"Modèle sauvegardé sous {stl_filename}")
