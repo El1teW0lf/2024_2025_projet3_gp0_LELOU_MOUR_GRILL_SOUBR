@@ -1,6 +1,4 @@
-<h1 align="center">
-Projet N°3: That's Not The Point
-</h1>
+![titre](https://github.com/El1teW0lf/2024_2025_projet3_gp0_LELOU_MOUR_GRILL_SOUBR/blob/main/rainbow.svg)
 
 <details>
 
