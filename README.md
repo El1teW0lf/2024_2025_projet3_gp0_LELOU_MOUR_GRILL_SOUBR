@@ -28,13 +28,10 @@ Projet N°3: That's Not The Point
 </summary>
 </h1>
 
-> [!NOTE]
 > ![image](https://github.com/El1teW0lf/2024_2025__p04_projet2.5_n1/blob/main/folder/test.svg)
 
-> [!TIP]
 > ![imagee](https://github.com/El1teW0lf/2024_2025__p04_projet2.5_n1/blob/main/folder/stat_langage.svg)
 
-> [!WARNING]
 > ### VOUS ÊTES OBLIGES D'INSTALLER TOUS LES MODULES : ```requirements.txt```
 
 </details>
