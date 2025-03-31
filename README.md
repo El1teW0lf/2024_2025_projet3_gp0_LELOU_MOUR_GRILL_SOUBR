@@ -1,4 +1,6 @@
-![titre](https://github.com/El1teW0lf/2024_2025_projet3_gp0_LELOU_MOUR_GRILL_SOUBR/blob/main/rainbow.svg)
+<h1 align="center">
+<img src="https://github.com/El1teW0lf/2024_2025_projet3_gp0_LELOU_MOUR_GRILL_SOUBR/blob/main/rainbow.svg" alt="Logo HubSpot"/>
+ </h1>
 
 <details>
 
