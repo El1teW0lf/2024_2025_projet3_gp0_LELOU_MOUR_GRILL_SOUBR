@@ -4,7 +4,12 @@ Projet N°3: That's Not The Point
 
 <details>
 
-<summary>👨‍💼 • Membres :</summary>
+<summary> 
+<h1> 
+👨‍💼 • Membres :
+</summary>
+</h1>
+
 
 ### Classe de 1ere 4, Cours de Mr Pioche
 * #### Célestin → [GoldyRat](https://github.com/GoldyRat)
