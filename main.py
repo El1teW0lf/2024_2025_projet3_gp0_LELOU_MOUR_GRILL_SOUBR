@@ -1,6 +1,10 @@
 from modules.map import Map
 import pygame
 import numpy as np
+from modules.ai.spawn import handle_spawn
+from modules.ai.expansion import expand_ai
+from modules.ai.war import declare_war
+from modules.ai.tools import are_ais_at_war
 
 pygame.init()
 
@@ -9,6 +13,7 @@ WIDTH, HEIGHT = 800, 800
 CELL_SIZE = WIDTH // 100  # Adjust cell size to fit the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Not your life.")
+frame_count = 0
 
 running = True
 seed = 0
@@ -17,19 +22,31 @@ game_map = None  # Define globally
 def start():
     global game_map
     print("Game started!")
+    
+    colors = ["red", "blue", "green", "yellow", "purple", "cyan", "orange", "pink"]  # Example colors
+    civ_names = ["Rome", "Greece", "Egypt", "Persia", "China", "India", "Maya", "Aztec"]  # Example civ names
+    
     game_map = Map(seed)  # Initialize the map
+    handle_spawn(colors, civ_names, game_map)  # Spawn AI civilizations
+
 
 def draw_grid():
-    """Draws the 100x100 grid using game_map.map."""
+    """Draws the 100x100 grid, including AI civilizations."""
     if game_map is None or not hasattr(game_map, "map"):
         return
 
     for x in range(100):
         for y in range(100):
-            color = game_map.map[x, y].color  # Get hex color from element
-            rgb_color = pygame.Color(color)   # Convert hex to RGB
+            tile = game_map.map[x, y]
+            
+            if tile.has_ai:  # If it's an AI color (e.g., "red")
+                rgb_color = pygame.Color(tile.color)  # Convert name to RGB
+            else:
+                rgb_color = pygame.Color(tile.color)  # Normal terrain
+            
             rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
             pygame.draw.rect(screen, rgb_color, rect)
+
 
 def update():
     screen.fill((0, 0, 0))  # Clear screen
@@ -48,11 +65,19 @@ def global_loop():
             if event.type == pygame.QUIT:
                 running = False
 
+        # Trigger AI expansion every few frames
+        for ai in game_map.ais:
+            expand_ai(game_map.map, ai)  # Allow each AI to expand in their territory or enemy territory
+
         update()  # Update the screen
         pygame.display.flip()  # Refresh display
         clock.tick(60)  # 60 FPS
 
     pygame.quit()
     print("Game closed.")
+
+
+
+
 
 global_loop()

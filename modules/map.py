@@ -7,6 +7,7 @@ class Map():
         
         self.size = (100,100)
         self.map =  np.empty(self.size, dtype=object)
+        self.ais = None
         self.noise = generate_worley_noise(num_points = 100)
         self._populate_map()
 

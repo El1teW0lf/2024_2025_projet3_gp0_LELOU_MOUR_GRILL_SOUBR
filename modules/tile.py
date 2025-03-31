@@ -8,6 +8,9 @@ class Tile():
         self.y = y
         self.biome = biome
         self.color = biomes[self.biome]["color"]
+        self.original_color = biomes[self.biome]["color"]
+        self.has_ai = False
+        self.ai = None
 
     def _generate_ressources(self):
         self.mine_ressources = {}
@@ -31,4 +34,6 @@ class Tile():
     def print_debug(self):
         print(f"Tile {self.x} {self.y} {self.biome} | "
             f"Resources: {self.mine_ressources} {self.surface_ressources} | "
-            f"Population: {self.pop} | Temperature: {self.temp}")
+            f"Population: {self.pop} | Temperature: {self.temp} | "
+            f"AI : {(lambda self: f'Has AI: {self.ai.name}' if self.has_ai else 'No AI')(self)}")
+            
