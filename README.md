@@ -35,3 +35,5 @@
 > ### VOUS ÊTES OBLIGES D'INSTALLER TOUS LES MODULES : ```requirements.txt```
 
 </details>
+
+Brouillon : Trois branches / interneconnectable >>> Navigation / Resitance / Conquérance
