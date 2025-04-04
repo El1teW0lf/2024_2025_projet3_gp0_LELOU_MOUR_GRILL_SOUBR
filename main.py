@@ -2,6 +2,7 @@ from modules.map import Map
 import pygame
 import numpy as np
 from modules.ai.spawn import handle_spawn
+from modules.nation import Nation
 
 
 pygame.init()
@@ -21,11 +22,11 @@ def start():
     global game_map
     print("Game started!")
     
-    colors = ["red", "blue", "green", "yellow", "purple", "cyan", "orange", "pink"]  # Example colors
-    civ_names = ["Rome", "Greece", "Egypt", "Persia", "China", "India", "Maya", "Aztec"]  # Example civ names
-    
-    game_map = Map(seed)  # Initialize the map
-    handle_spawn(colors, civ_names, game_map)  # Spawn AI civilizations
+    game_map = Map(seed)
+    nations = [Nation() for _ in range(10)]
+    ai = []
+    for i in nations:
+        ai.append(handle_spawn(game_map, i))
 
 
 def draw_grid():
@@ -37,10 +38,7 @@ def draw_grid():
         for y in range(100):
             tile = game_map.map[x, y]
             
-            if tile.has_ai:  # If it's an AI color (e.g., "red")
-                rgb_color = pygame.Color(tile.color)  # Convert name to RGB
-            else:
-                rgb_color = pygame.Color(tile.color)  # Normal terrain
+            rgb_color = pygame.Color(tile.color)  
             
             rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
             pygame.draw.rect(screen, rgb_color, rect)
@@ -51,7 +49,7 @@ def update():
     draw_grid()  # Draw the grid
     tile_pos = (pygame.mouse.get_pos()[0]//CELL_SIZE,pygame.mouse.get_pos()[1]//CELL_SIZE)
 
-    game_map.map[tile_pos[0],tile_pos[1]].print_debug()
+    #game_map.map[tile_pos[0],tile_pos[1]].print_debug()
 
 def global_loop():
     global running
