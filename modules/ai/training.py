@@ -38,9 +38,9 @@ def score_tile_biome(tile):
     return biomes_score.get(tile.biome, 0)
 
 def score_tile_temperature(tile):
-    if tile.temp < 0 or tile.temp > 40:
-        return -10
-    return 0
+    t = tile.temp
+    score = (-0.1*t)*(t-40)
+    return score
 
 def score_tile(tile):
     score = 0
