@@ -4,7 +4,7 @@ biomes = {
             "surface" : ["Flowers"],
             "underground" : ["Iron", "Coal", "Gold", "Redstone"]
         },
-        "color" : "#08ab17",
+        "color" : "08ab17",
         "temperature" : 20,
         "population" : 50
     },
@@ -13,7 +13,7 @@ biomes = {
             "surface" : ["Flowers", "Wood"],
             "underground" : ["Iron", "Coal", "Gold", "Redstone"]    
         },
-        "color" : "#1c7925",
+        "color" : "1c7925",
         "temperature" : 18,
         "population" : 40
     },
@@ -22,7 +22,7 @@ biomes = {
             "surface" : [],
             "underground" : ["Iron", "Coal", "Gold", "Redstone", "Diamond", "Emerald"]
         },
-        "color" : "#777777",
+        "color" : "777777",
         "temperature" : 10,
         "population" : 10
     },
@@ -31,7 +31,7 @@ biomes = {
             "surface" : ["Sand", "Cactus"],
             "underground" : ["Iron", "Coal", "Gold", "Redstone"]
         },
-        "color" : "#e2eba4",
+        "color" : "e2eba4",
         "temperature" : 30,
         "population" : 5
         
@@ -41,7 +41,7 @@ biomes = {
             "surface" : ["Magma"],
             "underground" : ["Magma"]
         },
-        "color" : "#561818",
+        "color" : "561818",
         "temperature" : 50,
         "population" : 0
     },
@@ -50,7 +50,7 @@ biomes = {
             "surface" : ["Snow"],
             "underground" : ["Iron", "Coal", "Gold", "Redstone", "Ice"]
         },
-        "color" : "#f4f4f4",
+        "color" : "f4f4f4",
         "temperature" : -10,
         "population" : 0
     },
@@ -59,7 +59,7 @@ biomes = {
             "surface" : ["Water", "Algae"],
             "underground" : ["Water"]
         },
-        "color" : "#009eff",
+        "color" : "009eff",
         "temperature" : 15,
         "population" : 0
     }

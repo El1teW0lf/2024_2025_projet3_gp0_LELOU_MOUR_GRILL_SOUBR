@@ -13,7 +13,7 @@ class Nation():
         }
         self.war = None
         self.name = self.create_name()
-        self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.color = "{:06x}".format(random.randint(0, 0xFFFFFF))
         self.score = 0
 
         print(f"Created New Nation {self.name}")
@@ -68,5 +68,6 @@ class Nation():
             tile.nation = self
             self.tiles.append(tile)
             self.ressources["money"] -= tile.value
+
             return True
         return False

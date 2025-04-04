@@ -1,7 +1,7 @@
 from modules.map import Map
 import pygame
 import numpy as np
-from modules.ai.spawn import handle_spawn
+from modules.ai.ai import AI
 from modules.nation import Nation
 
 
@@ -23,10 +23,10 @@ def start():
     print("Game started!")
     
     game_map = Map(seed)
-    nations = [Nation() for _ in range(10)]
+    nations = [Nation(game_map) for _ in range(10)]
     ai = []
     for i in nations:
-        ai.append(handle_spawn(game_map, i))
+        ai.append(AI(game_map,i))
 
 
 def draw_grid():
@@ -38,7 +38,7 @@ def draw_grid():
         for y in range(100):
             tile = game_map.map[x, y]
             
-            rgb_color = pygame.Color(tile.color)  
+            rgb_color = pygame.Color(f"#{tile.color}")  
             
             rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
             pygame.draw.rect(screen, rgb_color, rect)

@@ -2,7 +2,7 @@
 
 def check_if_valid_tile(tile, ai=None):
     # Tile is valid if it is either unoccupied or occupied by an enemy AI that the current AI is at war with
-    if tile.has_ai or tile.biome in ["water", "volcano"]:
+    if  tile.biome in ["water", "volcano"]:
         return False
     # Add more conditions if there are other valid tile checks (e.g., terrain, obstacles)
     return True  # Tile is valid for expansion
