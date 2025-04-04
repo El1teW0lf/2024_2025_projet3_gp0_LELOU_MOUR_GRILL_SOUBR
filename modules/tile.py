@@ -10,9 +10,26 @@ class Tile():
         self.biome = biome
         self.color = biomes[self.biome]["color"]
         self.original_color = biomes[self.biome]["color"]
-        self.nation = None
+        self._nation = None
         self.value = 100
 
+    def combine_hex_values(self,d):
+        d_items = sorted(d.items())
+        tot_weight = sum(d.values())
+        red = int(sum([int(k[:2], 16)*v for k, v in d_items])/tot_weight)
+        green = int(sum([int(k[2:4], 16)*v for k, v in d_items])/tot_weight)
+        blue = int(sum([int(k[4:6], 16)*v for k, v in d_items])/tot_weight)
+        zpad = lambda x: x if len(x)==2 else '0' + x
+        return zpad(hex(red)[2:]) + zpad(hex(green)[2:]) + zpad(hex(blue)[2:])
+
+    @property
+    def nation(self):
+        return self._nation
+    
+    @nation.setter
+    def nation(self,nation):
+        self._nation = nation
+        self.color = self.combine_hex_values({self.color: 0.1, nation.color: 1})
 
     def _generate_ressources(self):
         self.mine_ressources = {}
