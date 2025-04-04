@@ -1,7 +1,7 @@
 biomes = {
     "plains" : {
         "resources" : {
-            "surface" : ["Fleurs"],
+            "surface" : ["Flowers"],
             "underground" : ["Iron", "Coal", "Gold", "Redstone"]
         },
         "color" : "#08ab17",
@@ -10,7 +10,7 @@ biomes = {
     },
     "forest" : {
         "resources" : {
-            "surface" : ["Fleurs", "Bois"],
+            "surface" : ["Flowers", "Wood"],
             "underground" : ["Iron", "Coal", "Gold", "Redstone"]    
         },
         "color" : "#1c7925",

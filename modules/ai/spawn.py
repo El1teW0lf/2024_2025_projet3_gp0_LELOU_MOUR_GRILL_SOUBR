@@ -28,7 +28,7 @@ def handle_spawn(colors, civ_names, map):
             if check_if_valid_tile(map[y, x], ai):
                 found = True
                 break
-            x = (x + 1) % 100  # Wrap around horizontally if needed
+            x = (x + 1) # Wrap around horizontally if needed
 
         # If no valid X found, shift Y
         if not found:
@@ -36,7 +36,7 @@ def handle_spawn(colors, civ_names, map):
                 if check_if_valid_tile(map[y, x], ai):
                     found = True
                     break
-                y = (y + 1) % 100  # Wrap around vertically
+                y = (y + 1)  # Wrap around vertically
 
         # Ensure a valid tile is assigned
         if found:

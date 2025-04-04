@@ -1,6 +1,7 @@
 import random
 import math
-from modules.generation.biomes import biomes
+from generation.biomes import biomes
+from ai.training import score_tile
 
 class Tile():
     def __init__(self, x, y, biome):
@@ -37,3 +38,7 @@ class Tile():
             f"Population: {self.pop} | Temperature: {self.temp} | "
             f"AI : {(lambda self: f'Has AI: {self.ai.name}' if self.has_ai else 'No AI')(self)}")
             
+
+tile = Tile(52, 24, "mountain")
+tile.setup()
+print(score_tile(tile))
