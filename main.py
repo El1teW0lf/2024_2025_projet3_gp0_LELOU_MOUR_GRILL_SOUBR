@@ -2,9 +2,7 @@ from modules.map import Map
 import pygame
 import numpy as np
 from modules.ai.spawn import handle_spawn
-from modules.ai.expansion import expand_ai
-from modules.ai.war import declare_war
-from modules.ai.tools import are_ais_at_war
+
 
 pygame.init()
 
@@ -65,9 +63,6 @@ def global_loop():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Trigger AI expansion every few frames
-        for ai in game_map.ais:
-            expand_ai(game_map.map, ai)  # Allow each AI to expand in their territory or enemy territory
 
         update()  # Update the screen
         pygame.display.flip()  # Refresh display
