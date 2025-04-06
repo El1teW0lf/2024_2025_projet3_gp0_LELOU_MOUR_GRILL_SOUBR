@@ -13,7 +13,7 @@ class Nation():
         }
         self.war = None
         self.name = self.create_name()
-        self.color = "{:06x}".format(random.randint(0, 0xFFFFFF))
+        self.color = "000000"
         self.score = 0
 
         print(f"Created New Nation {self.name}")

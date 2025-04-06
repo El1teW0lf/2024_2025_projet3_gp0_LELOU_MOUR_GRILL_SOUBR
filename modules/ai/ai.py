@@ -13,7 +13,7 @@ class AI:
     
     def find_start_pos(self):
         possible = (random.randint(0, 99), random.randint(0, 99))
-        while self.map.map[possible[0],possible[1]] == "water":
+        while self.map.map[possible[0],possible[1]].biome == "water":
             possible = (random.randint(0, 99), random.randint(0, 99))
 
         return possible

@@ -3,74 +3,86 @@ import pygame
 import numpy as np
 from modules.ai.ai import AI
 from modules.nation import Nation
+import time
 
 
-pygame.init()
-
-# Window size
-WIDTH, HEIGHT = 800, 800
-CELL_SIZE = WIDTH // 100  # Adjust cell size to fit the screen
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Not your life.")
-frame_count = 0
-
-running = True
-seed = 0
-game_map = None  # Define globally
-
-def start():
-    global game_map
-    print("Game started!")
-    
-    game_map = Map(seed)
-    nations = [Nation(game_map) for _ in range(10)]
-    ai = []
-    for i in nations:
-        ai.append(AI(game_map,i))
-
-
-def draw_grid():
-    """Draws the 100x100 grid, including AI civilizations."""
-    if game_map is None or not hasattr(game_map, "map"):
-        return
-
-    for x in range(100):
-        for y in range(100):
-            tile = game_map.map[x, y]
+class Main():
+    def __init__(self):
+        
+        pygame.init()
+        
+        self.WIDTH, self.HEIGHT = 1000, 800
+        self.CELL_SIZE = 8
+        self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        self.font = pygame.freetype.Font("Blazma-Regular.ttf", 17)
+        pygame.display.set_caption("Not your life.")
+        
+        self.seed = int(time.time()) 
+        
+        self.map = Map(self.seed)
+        self.nations = [Nation(self.map) for _ in range(10)]
+        self.ai = []
+        for i in self.nations:
+            self.ai.append(AI(self.map,i))
             
-            rgb_color = pygame.Color(f"#{tile.color}")  
-            
-            rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-            pygame.draw.rect(screen, rgb_color, rect)
+        self.running = True
+        self.clock = pygame.time.Clock()
+        
+    def _draw_map(self):
+        for x in range(100):
+            for y in range(100):
+                tile = self.map.map[x, y]
+                
+                rgb_color = pygame.Color(f"#{tile.color}")  
+                
+                rect = pygame.Rect(x * self.CELL_SIZE, y * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE)
+                pygame.draw.rect(self.screen, rgb_color, rect)
 
+    def _draw_text(self):
+        tile = self.map.map[self.tile_pos[0],self.tile_pos[1]]
+        
+        text_surface, rect = self.font.render(f"Tile ({self.tile_pos[0]},{self.tile_pos[1]})", (255,255, 255))
+        self.screen.blit(text_surface, (810, 20))
+        
+        text_surface, rect = self.font.render(f"Biome {tile.biome}", (255,255, 255))
+        self.screen.blit(text_surface, (810, 40))
+        
+        text_surface, rect = self.font.render(f"Nation", (255,255, 255))
+        self.screen.blit(text_surface, (810, 60))
+        
+        text_surface, rect = self.font.render(f"{tile.nation.name if tile.nation != None else None}", (255,255, 255))
+        self.screen.blit(text_surface, (810, 80))
+        
+        text_surface, rect = self.font.render(f"Value {tile.value}", (255,255, 255))
+        self.screen.blit(text_surface, (810, 100))
 
-def update():
-    screen.fill((0, 0, 0))  # Clear screen
-    draw_grid()  # Draw the grid
-    tile_pos = (pygame.mouse.get_pos()[0]//CELL_SIZE,pygame.mouse.get_pos()[1]//CELL_SIZE)
+    def update(self):
+        self.screen.fill((0, 0, 0)) 
+        self._draw_map()
 
-    #game_map.map[tile_pos[0],tile_pos[1]].print_debug()
+        self.tile_pos = (min(99,pygame.mouse.get_pos()[0]//self.CELL_SIZE),min(99,pygame.mouse.get_pos()[1]//self.CELL_SIZE))
 
-def global_loop():
-    global running
-    clock = pygame.time.Clock()
-    start()  # Initialize game elements
+        self._draw_text()
     
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
 
 
-        update()  # Update the screen
-        pygame.display.flip()  # Refresh display
-        clock.tick(60)  # 60 FPS
+            self.update()  
+            pygame.display.flip() 
+            self.clock.tick(60) 
 
-    pygame.quit()
-    print("Game closed.")
-
-
+        pygame.quit()
+        print("Game closed.")
 
 
 
-global_loop()
+
+
+
+game = Main()
+game.run()

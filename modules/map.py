@@ -1,16 +1,19 @@
 from modules.tile import Tile
 from modules.generation.generation import generate_worley_noise,biomes
 import numpy as np
+import random
 
 class Map():
     def __init__(self,seed):
+        
+        random.seed(seed)
         
         self.size = (100,100)
         self.map =  np.empty(self.size, dtype=object)
         self.ais = None
         self.noise = generate_worley_noise(num_points = 100)
         self._populate_map()
-
+        
         for i in range(5):
             self._smooth()
 
@@ -36,6 +39,9 @@ class Map():
                     counts = {}
                     for val in neighbors:
                         counts[val] = counts.get(val, 0) + 1
+                    
+                    most_count = max(counts.values())        
                     most_common = max(counts, key=counts.get)
 
-                    self.map[y][x].biome = most_common
+                    if most_count > 3:
+                        self.map[y][x].biome = most_common
