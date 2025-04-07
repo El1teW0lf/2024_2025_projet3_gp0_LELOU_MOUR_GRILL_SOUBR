@@ -23,8 +23,8 @@ class GameMenu:
         self.clock = pygame.time.Clock()
 
         # Load images - Remplacer les images
-        self.play_img = pygame.image.load("image1.png").convert_alpha()
-        self.quit_img = pygame.image.load("image2.png").convert_alpha()
+        self.play_img = pygame.image.load("image4.png").convert_alpha()
+        self.quit_img = pygame.image.load("image5.png").convert_alpha()
         self.play_img = pygame.transform.scale(self.play_img, (240, 60))
         self.quit_img = pygame.transform.scale(self.quit_img, (240, 60))
 
