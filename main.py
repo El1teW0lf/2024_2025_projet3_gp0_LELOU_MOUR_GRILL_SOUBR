@@ -4,7 +4,11 @@ import numpy as np
 from modules.ai.ai import AI
 from modules.nation import Nation
 import time
+from menu_start import GameMenu
 
+if __name__ == "__main__":
+    menu = GameMenu()
+    menu.main_menu()
 
 class Main():
     def __init__(self):
