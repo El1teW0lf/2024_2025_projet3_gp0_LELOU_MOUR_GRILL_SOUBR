@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -69,6 +71,7 @@ class Maze:
         for row in self.maze:
             print(" ".join(symbols[int(cell)] for cell in row))
         print("Steps taken:", self.steps)
+>>>>>>> a9307784ea0502065ffc3130210d92aa62e06d53
 
 # Agent Class
 class Agent:
@@ -115,6 +118,15 @@ class Agent:
                     best_action = action
             return best_action
 
+<<<<<<< HEAD
+def get_neighboring_tiles(tile, map):
+    neighbors = []
+    for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        nx, ny = tile.x + dx, tile.y + dy
+        if 0 <= nx < 99 and 0 <= ny < 99:
+            neighbors.append(map[ny, nx])
+    return neighbors
+=======
 # Main training loop
 if __name__ == '__main__':
     episodes = 5000
@@ -149,3 +161,4 @@ if __name__ == '__main__':
     plt.ylabel("Steps to complete the maze")
     plt.title("Maze Solving Progress Over Episodes")
     plt.show()
+>>>>>>> a9307784ea0502065ffc3130210d92aa62e06d53
