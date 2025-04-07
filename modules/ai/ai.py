@@ -1,5 +1,4 @@
 import random
-from modules.ai.tools import check_if_valid_tile
 
 class AI:
     def __init__(self, map,nation):

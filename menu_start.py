@@ -1,8 +1,7 @@
 import pygame
 import numpy as np
 from modules.map import Map
-from modules.ai.spawn import handle_spawn
-from modules.ai.tools import are_ais_at_war
+
 
 pygame.init()
 
@@ -73,56 +72,3 @@ def main_menu():
         pygame.display.update()
         clock.tick(60)
 
-# --- Démarrage du jeu ---
-def start():
-    global game_map
-    print("Game started!")
-
-    colors = ["red", "blue", "green", "yellow", "purple", "cyan", "orange", "pink"]
-    civ_names = ["Rome", "Greece", "Egypt", "Persia", "China", "India", "Maya", "Aztec"]
-
-    game_map = Map(seed)
-    handle_spawn(colors, civ_names, game_map)
-
-# --- Dessin de la carte ---
-def draw_grid():
-    if game_map is None or not hasattr(game_map, "map"):
-        return
-
-    for x in range(100):
-        for y in range(100):
-            tile = game_map.map[x, y]
-            rgb_color = pygame.Color(tile.color)
-            rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-            pygame.draw.rect(screen, rgb_color, rect)
-
-# --- Mise à jour écran jeu ---
-def update():
-    screen.fill((0, 0, 0))
-    draw_grid()
-    tile_pos = (pygame.mouse.get_pos()[0] // CELL_SIZE, pygame.mouse.get_pos()[1] // CELL_SIZE)
-    game_map.map[tile_pos[0], tile_pos[1]].print_debug()
-
-# --- Boucle principale ---
-def global_loop():
-    global running
-    clock = pygame.time.Clock()
-
-    main_menu()
-    start()
-
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-
-        update()
-        pygame.display.flip()
-        clock.tick(60)
-
-    pygame.quit()
-    print("Game closed.")
-
-# --- Exécution ---
-global_loop()
