@@ -4,7 +4,11 @@ import numpy as np
 from modules.ai.ai import AI
 from modules.nation import Nation
 import time
+from menu_start import GameMenu
 
+if __name__ == "__main__":
+    menu = GameMenu()
+    menu.main_menu()
 
 class Main():
     def __init__(self):
@@ -44,10 +48,10 @@ class Main():
         text_surface, rect = self.font.render(f"Tile ({self.tile_pos[0]},{self.tile_pos[1]})", (255,255, 255))
         self.screen.blit(text_surface, (810, 20))
         
-        text_surface, rect = self.font.render(f"Biome {tile.biome}", (255,255, 255))
+        text_surface, rect = self.font.render(f"Biome :{tile.biome}", (255,255, 255))
         self.screen.blit(text_surface, (810, 40))
         
-        text_surface, rect = self.font.render(f"Nation", (255,255, 255))
+        text_surface, rect = self.font.render(f"Nation :", (255,255, 255))
         self.screen.blit(text_surface, (810, 60))
         
         text_surface, rect = self.font.render(f"{tile.nation.name if tile.nation != None else None}", (255,255, 255))

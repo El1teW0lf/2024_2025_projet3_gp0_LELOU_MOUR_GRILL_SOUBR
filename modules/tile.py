@@ -1,7 +1,7 @@
 import random
 import math
 from modules.generation.biomes import biomes
-from modules.ai.training import score_tile
+
 
 class Tile():
     def __init__(self, x, y, biome):
