@@ -69,7 +69,7 @@ class Nation():
             tile.nation = self
             self.tiles.append(tile)
             self.ressources["money"] -= tile.value
-
+            print(self._possible_conquer())
+            self.set_population()
             return True
         return False
-    

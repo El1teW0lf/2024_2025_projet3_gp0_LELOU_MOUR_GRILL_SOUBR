@@ -4,7 +4,11 @@ import numpy as np
 from modules.ai.ai import AI
 from modules.nation import Nation
 import time
+from menu_start import GameMenu
 
+if __name__ == "__main__":
+    menu = GameMenu()
+    menu.main_menu()
 
 class Main():
     def __init__(self):
@@ -17,7 +21,7 @@ class Main():
         self.font = pygame.freetype.Font("Blazma-Regular.ttf", 17)
         pygame.display.set_caption("Not your life.")
         
-        self.seed = int(time.time()) 
+        self.seed = 0
         
         self.map = Map(self.seed)
         self.nations = [Nation(self.map) for _ in range(10)]
@@ -27,6 +31,8 @@ class Main():
             
         self.running = True
         self.clock = pygame.time.Clock()
+        self.tick = 0
+        self.day_tick = 0
         
     def _draw_map(self):
         for x in range(100):
@@ -75,6 +81,10 @@ class Main():
             self.update()  
             pygame.display.flip() 
             self.clock.tick(60) 
+            self.tick += 1
+            if self.tick % 60 == 0:
+                self.day_tick += 1
+                
 
         pygame.quit()
         print("Game closed.")
