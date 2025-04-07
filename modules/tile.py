@@ -11,16 +11,33 @@ class Tile():
         self.color = biomes[self.biome]["color"]
         self.original_color = biomes[self.biome]["color"]
         self._nation = None
-        self.value = -0
+        self.value = -0 # <-- -0 c'est quand même une dinguerie
 
-    def combine_hex_values(self,d):
-        d_items = sorted(d.items())
+    def combine_hex_values(self, d):
+    # Ensure the hex colors are 6 characters long (without the '#')
+        def ensure_full_hex(hex_value):
+            # Remove the '#' and pad with zeros if necessary
+            hex_value = hex_value.lstrip('#')
+            if len(hex_value) == 3:  # e.g., 'abc' -> 'a00b00c'
+                hex_value = ''.join([c * 2 for c in hex_value])
+            return hex_value.zfill(6)  # Ensure the hex is 6 characters long
+        
+        # Apply ensure_full_hex to all items in d
+        d_items = {ensure_full_hex(k): v for k, v in d.items()}
+        
         tot_weight = sum(d.values())
-        red = int(sum([int(k[:2], 16)*v for k, v in d_items])/tot_weight)
-        green = int(sum([int(k[2:4], 16)*v for k, v in d_items])/tot_weight)
-        blue = int(sum([int(k[4:6], 16)*v for k, v in d_items])/tot_weight)
-        zpad = lambda x: x if len(x)==2 else '0' + x
+        
+        # Extract the red, green, and blue components
+        red = int(sum([int(k[:2], 16) * v for k, v in d_items.items()]) / tot_weight)
+        green = int(sum([int(k[2:4], 16) * v for k, v in d_items.items()]) / tot_weight)
+        blue = int(sum([int(k[4:6], 16) * v for k, v in d_items.items()]) / tot_weight)
+        
+        # Pad single digit hex values with leading zeroes
+        zpad = lambda x: x if len(x) == 2 else '0' + x
+    
+        # Return combined hex value (without the '#')
         return zpad(hex(red)[2:]) + zpad(hex(green)[2:]) + zpad(hex(blue)[2:])
+
 
     @property
     def biome(self):
@@ -103,7 +120,7 @@ class Tile():
             "snow": 1,
             "water": 0
         }
-        return biomes_score.get(self.biome, 0)
+        return biomes_score.get(self.biome, 0) * 50
 
 
     def score_tile_temperature(self):

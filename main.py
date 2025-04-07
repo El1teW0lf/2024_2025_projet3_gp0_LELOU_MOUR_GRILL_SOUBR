@@ -50,16 +50,16 @@ class Main():
         text_surface, rect = self.font.render(f"Tile ({self.tile_pos[0]},{self.tile_pos[1]})", (255,255, 255))
         self.screen.blit(text_surface, (810, 20))
         
-        text_surface, rect = self.font.render(f"Biome :{tile.biome}", (255,255, 255))
+        text_surface, rect = self.font.render(f"Biome : {tile.biome}", (255,255, 255))
         self.screen.blit(text_surface, (810, 40))
         
-        text_surface, rect = self.font.render(f"Nation :", (255,255, 255))
+        text_surface, rect = self.font.render(f"Nation : ", (255,255, 255))
         self.screen.blit(text_surface, (810, 60))
         
         text_surface, rect = self.font.render(f"{tile.nation.name if tile.nation != None else None}", (255,255, 255))
         self.screen.blit(text_surface, (810, 80))
         
-        text_surface, rect = self.font.render(f"Value {tile.value}", (255,255, 255))
+        text_surface, rect = self.font.render(f"Value : {tile.value}", (255,255, 255))
         self.screen.blit(text_surface, (810, 100))
 
     def update(self):

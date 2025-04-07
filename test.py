@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import sys
 import random
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 56c57a1e1a12e226b6a294408db981f9afad1796
 import numpy as np
 import pygame
 import torch
@@ -23,9 +28,39 @@ class MazeEnv:
         self.goal = (4, 3)   # goal cell (maze[4,3] == 3)
         self.reset()
 
+<<<<<<< HEAD
     def reset(self):
         self.agent_pos = self.start
         return self.get_state()
+=======
+    def update_maze(self, action):
+        y, x = self.robot_position
+        self.maze[y, x] = 0  # mark current cell as empty
+        dy, dx = ACTIONS[action]
+        y_new, x_new = y + dy, x + dx
+        self.robot_position = (y_new, x_new)
+        self.maze[y_new, x_new] = 2  # update robot's new position
+        self.steps += 1
+        
+    def is_game_over(self):
+        # The game is over when the robot reaches the bottom-right corner
+        return self.robot_position == (5, 5)
+    
+    def give_reward(self):
+        # Reward: 0 if goal is reached, else -1 per move
+        return 0 if self.robot_position == (5, 5) else -1
+        
+    def get_state_and_reward(self):
+        return self.robot_position, self.give_reward()
+    
+    def print_maze(self):
+        # Print the maze in a human-readable format
+        symbols = {0: '0', 1: 'X', 2: 'R'}
+        for row in self.maze:
+            print(" ".join(symbols[int(cell)] for cell in row))
+        print("Steps taken:", self.steps)
+>>>>>>> a9307784ea0502065ffc3130210d92aa62e06d53
+>>>>>>> 56c57a1e1a12e226b6a294408db981f9afad1796
 
     def get_state(self):
         # Represent state as normalized (row, col)
@@ -86,6 +121,15 @@ class QNetwork(nn.Module):
         x = F.relu(self.fc2(x))
         return self.out(x)
 
+<<<<<<< HEAD
+def get_neighboring_tiles(tile, map):
+    neighbors = []
+    for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        nx, ny = tile.x + dx, tile.y + dy
+        if 0 <= nx < 99 and 0 <= ny < 99:
+            neighbors.append(map[ny, nx])
+    return neighbors
+=======
 # Main training loop
 def train():
     # Initialize PyGame
@@ -188,4 +232,40 @@ def train():
                 sys.exit()
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     train()
+=======
+    episodes = 5000
+    steps_list = []
+    agent = None
+
+    
+# Iterating through data list of unknown length
+
+    for episode in tqdm(range(episodes), desc="Training Episodes"):
+        maze = Maze()
+        if agent is None:
+            agent = Agent(maze)
+
+        progress_bar = tqdm()
+        while not maze.is_game_over():
+            state = maze.robot_position
+            allowed_moves = maze.allowed_states[state]
+            action = agent.choose_action(state, allowed_moves)
+            maze.update_maze(action)
+            state, reward = maze.get_state_and_reward()
+            agent.update_state_history(state, reward)
+            progress_bar.update(1)
+        agent.learn()
+        steps_list.append(maze.steps)
+        if (episode + 1) % 500 == 0:
+            print(f"Episode {episode + 1} completed in {maze.steps} steps")
+    
+    # Plot the number of steps per episode
+    plt.plot(steps_list)
+    plt.xlabel("Episode")
+    plt.ylabel("Steps to complete the maze")
+    plt.title("Maze Solving Progress Over Episodes")
+    plt.show()
+>>>>>>> a9307784ea0502065ffc3130210d92aa62e06d53
+>>>>>>> 56c57a1e1a12e226b6a294408db981f9afad1796
