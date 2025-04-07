@@ -31,6 +31,8 @@ class Main():
             
         self.running = True
         self.clock = pygame.time.Clock()
+        self.tick = 0
+        self.day_tick = 0
         
     def _draw_map(self):
         for x in range(100):
@@ -79,6 +81,10 @@ class Main():
             self.update()  
             pygame.display.flip() 
             self.clock.tick(60) 
+            self.tick += 1
+            if self.tick % 60 == 0:
+                self.day_tick += 1
+                
 
         pygame.quit()
         print("Game closed.")

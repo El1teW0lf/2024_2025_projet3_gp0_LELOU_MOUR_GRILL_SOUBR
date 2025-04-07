@@ -75,6 +75,9 @@ class SkillTree:
                 break
             self.unlock_skill(choice)
 
+    def _add_points(self,nation):
+        self.points += (nation.ressources["population"]/100000)
+
 
 # --- Lancer le programme ---
 if __name__ == "__main__":
