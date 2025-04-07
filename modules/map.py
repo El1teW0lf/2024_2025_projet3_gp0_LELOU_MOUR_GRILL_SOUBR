@@ -14,7 +14,7 @@ class Map():
         self.noise = generate_worley_noise(num_points = 100)
         self._populate_map()
         
-        for i in range(5):
+        for i in range(1):
             self._smooth()
 
 
@@ -43,5 +43,5 @@ class Map():
                     most_count = max(counts.values())        
                     most_common = max(counts, key=counts.get)
 
-                    if most_count > 3:
+                    if most_count >= 4:
                         self.map[y][x].biome = most_common

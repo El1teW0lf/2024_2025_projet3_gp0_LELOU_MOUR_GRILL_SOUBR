@@ -6,6 +6,7 @@ class Nation():
         self.ai = None
         self.map = map
         self.value = 0
+        self.pop = 0
         self.tiles = []
         self.ressources = {
             "money": 1000,
@@ -13,7 +14,7 @@ class Nation():
         }
         self.war = None
         self.name = self.create_name()
-        self.color = "000000"
+        self.color = "FF0000"
         self.score = 0
 
         print(f"Created New Nation {self.name}")
@@ -68,6 +69,28 @@ class Nation():
             tile.nation = self
             self.tiles.append(tile)
             self.ressources["money"] -= tile.value
-
+            print(self._possible_conquer())
             return True
         return False
+    
+    
+    def _possible_conquer(self):
+
+        possibles = []
+
+        for tile in self.tiles:
+
+            directions = [(-1,0),(1,0),(0,1),(0,-1)]
+
+            for i in directions:
+                x = tile.x + i[0]
+                y = tile.y + i[1]
+                x = min(99,max(0,x))
+                y = min(99,max(0,y))
+
+                new_tile = self.map.map[y,x]
+
+                if new_tile.nation == None and new_tile.value <= self.ressources["money"] and new_tile.biome != "water":
+                    possibles.append(new_tile)
+
+        return possibles

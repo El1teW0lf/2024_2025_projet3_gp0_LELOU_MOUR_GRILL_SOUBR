@@ -17,7 +17,7 @@ class Main():
         self.font = pygame.freetype.Font("Blazma-Regular.ttf", 17)
         pygame.display.set_caption("Not your life.")
         
-        self.seed = int(time.time()) 
+        self.seed = 0
         
         self.map = Map(self.seed)
         self.nations = [Nation(self.map) for _ in range(10)]
