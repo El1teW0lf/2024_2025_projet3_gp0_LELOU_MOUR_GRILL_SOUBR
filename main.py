@@ -37,8 +37,9 @@ class Main():
 
     def _generate_world(self):
         self.map = Map(self.seed)
-        self.nations = [Nation(self.map) for _ in range(10)]
+        self.nations = [Nation(self.map) for _ in range(1)]
         self.ai = [AI(self.map, nation) for nation in self.nations]
+        self.trainer = Trainer(self)
 
     def _draw_map(self):
         for x in range(100):
@@ -76,6 +77,9 @@ class Main():
             min(99, pygame.mouse.get_pos()[1] // self.CELL_SIZE),
         )
         self._draw_text()
+        for i in self.nations:
+             i.tick()
+        self.trainer.tick()
     
     
     def run(self):
@@ -95,14 +99,11 @@ class Main():
         print("Game closed.")
 
 
-# ⏯ Entry point — this is where everything starts
 if __name__ == "__main__":
     pygame.init()
 
-    # Run main menu first
     menu = GameMenu()
-    menu.main_menu()  # Waits for user to click "Start" or something similar
+    menu.main_menu()  
 
-    # Then start the game (with proper loading screen)
     game = Main()
     game.run()

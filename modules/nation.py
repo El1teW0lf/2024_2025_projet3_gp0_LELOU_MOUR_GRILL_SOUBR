@@ -89,7 +89,7 @@ class Nation():
     
     def _get_score(self):
         
-        self.score = self.ressources["money"] + self.ressources["population"]
+        self.score = self.ressources["money"] + self.ressources["population"] / 100
         
         mul = 1
 
@@ -121,5 +121,5 @@ class Nation():
         return possibles
     
     def tick(self):
-        self.ressources["money"] += self.ressources["population"] * 0.25
+        self.ressources["money"] += self.ressources["population"] * 0.05
         self._get_score()
