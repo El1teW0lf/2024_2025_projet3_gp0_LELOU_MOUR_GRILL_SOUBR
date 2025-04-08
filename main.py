@@ -4,10 +4,11 @@ from modules.map import Map
 from modules.ai.ai import AI
 from modules.ai.trainer import Trainer
 from modules.nation import Nation
-from menu_start import GameMenu
+from modules.menus.menu_start import GameMenu
+from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
 
 
-class Main():
+class Main:
     def __init__(self):
         self.WIDTH, self.HEIGHT = 1000, 800
         self.CELL_SIZE = 8
@@ -22,23 +23,30 @@ class Main():
         self.tick = 0
         self.day_tick = 0
 
-        # Display loading screen before heavy work
-        self._show_loading_screen()
+        # Initialize loading screen
+        self.loading = LoadingScreen(self.screen, self.font, width=self.WIDTH, height=self.HEIGHT)
+        self.loading.show("Generating world...", progress=0.0)
 
         # Generate game world
         self._generate_world()
 
-    def _show_loading_screen(self):
-        self.screen.fill((10, 10, 10))
-        loading_text, rect = self.font.render("Generating world...", (255, 255, 255))
-        self.screen.blit(loading_text, (self.WIDTH // 2 - rect.width // 2, self.HEIGHT // 2 - rect.height // 2))
-        pygame.display.update()
-        pygame.event.pump()  # Ensure the screen updates before freezing tasks
-
     def _generate_world(self):
         self.map = Map(self.seed)
-        self.nations = [Nation(self.map) for _ in range(1)]
-        self.ai = [AI(self.map, nation) for nation in self.nations]
+        self.loading.show("Generating world...", progress=0.2)
+
+        self.nations = []
+        for i in range(10):
+            nation = Nation(self.map)
+            self.nations.append(nation)
+            progress = 0.2 + (i + 1) / 10 * 0.4  # 0.2–0.6 range
+            self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
+
+        self.ai = []
+        for i, nation in enumerate(self.nations):
+            self.ai.append(AI(self.map, nation))
+            progress = 0.6 + (i + 1) / 10 * 0.4  # 0.6–1.0 range
+            self.loading.show(f"Initializing AI... ({i + 1}/10)", progress=progress)
+
         self.trainer = Trainer(self)
 
     def _draw_map(self):
@@ -101,9 +109,8 @@ class Main():
 
 if __name__ == "__main__":
     pygame.init()
-
     menu = GameMenu()
-    menu.main_menu()  
+    menu.main_menu()
 
     game = Main()
     game.run()
