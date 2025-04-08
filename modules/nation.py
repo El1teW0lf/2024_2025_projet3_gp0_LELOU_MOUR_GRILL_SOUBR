@@ -83,11 +83,21 @@ class Nation():
             tile.nation = self
             self.tiles.append(tile)
             self.ressources["money"] -= tile.value
-            print(self._possible_conquer())
             self.set_population()
             return True
         return False
     
+    def _get_score(self):
+        
+        self.score = self.ressources["money"] + self.ressources["population"]
+        
+        mul = 1
+
+        for i in self.tiles:
+            mul += i.value
+
+        self.score *= mul
+
     
     def _possible_conquer(self):
 
@@ -109,3 +119,7 @@ class Nation():
                     possibles.append(new_tile)
 
         return possibles
+    
+    def tick(self):
+        self.ressources["money"] += self.ressources["population"] * 0.25
+        self._get_score()

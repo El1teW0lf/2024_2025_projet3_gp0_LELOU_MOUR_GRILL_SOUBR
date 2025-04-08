@@ -2,6 +2,7 @@ from modules.map import Map
 import pygame
 import numpy as np
 from modules.ai.ai import AI
+from modules.ai.trainer import Trainer
 from modules.nation import Nation
 import time
 from menu_start import GameMenu
@@ -24,10 +25,12 @@ class Main():
         self.seed = 0
         
         self.map = Map(self.seed)
-        self.nations = [Nation(self.map) for _ in range(10)]
+        self.nations = [Nation(self.map) for _ in range(1)]
         self.ai = []
         for i in self.nations:
             self.ai.append(AI(self.map,i))
+
+        self.trainer = Trainer(self)
             
         self.running = True
         self.clock = pygame.time.Clock()
@@ -69,6 +72,10 @@ class Main():
         self.tile_pos = (min(99,pygame.mouse.get_pos()[0]//self.CELL_SIZE),min(99,pygame.mouse.get_pos()[1]//self.CELL_SIZE))
 
         self._draw_text()
+
+        for i in self.nations:
+            i.tick()
+        self.trainer.tick()
     
     
     def run(self):
