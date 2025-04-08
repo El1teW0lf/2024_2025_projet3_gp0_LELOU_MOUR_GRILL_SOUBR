@@ -6,7 +6,8 @@ biomes = {
         },
         "color" : "08ab17",
         "temperature" : 20,
-        "population" : 50
+        "population" : 50,
+        "code": 0
     },
     "forest" : {
         "resources" : {
@@ -15,7 +16,8 @@ biomes = {
         },
         "color" : "1c7925",
         "temperature" : 18,
-        "population" : 40
+        "population" : 40,
+        "code": 1
     },
     "mountain" : {
         "resources" : {
@@ -24,7 +26,8 @@ biomes = {
         },
         "color" : "777777",
         "temperature" : 10,
-        "population" : 10
+        "population" : 10,
+        "code": 2
     },
     "desert" : {
         "resources" : {
@@ -33,7 +36,8 @@ biomes = {
         },
         "color" : "e2eba4",
         "temperature" : 30,
-        "population" : 5
+        "population" : 5,
+        "code": 3
         
     },
     "volcano" : {
@@ -43,7 +47,8 @@ biomes = {
         },
         "color" : "561818",
         "temperature" : 50,
-        "population" : 0
+        "population" : 0,
+        "code": 4
     },
     "snow" :{
         "resources" : {
@@ -52,7 +57,8 @@ biomes = {
         },
         "color" : "f4f4f4",
         "temperature" : -10,
-        "population" : 0
+        "population" : 0,
+        "code": 5
     },
     "water" : {
         "resources" : {
@@ -61,6 +67,7 @@ biomes = {
         },
         "color" : "009eff",
         "temperature" : 15,
-        "population" : 0
+        "population" : 0,
+        "code": 6
     }
 }

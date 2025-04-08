@@ -2,6 +2,7 @@ import pygame
 import pygame.freetype
 from modules.map import Map
 from modules.ai.ai import AI
+from modules.ai.trainer import Trainer
 from modules.nation import Nation
 from modules.menus.menu_start import GameMenu
 from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
@@ -82,7 +83,8 @@ class Main:
             min(99, pygame.mouse.get_pos()[1] // self.CELL_SIZE),
         )
         self._draw_text()
-
+    
+    
     def run(self):
         while self.running:
             for event in pygame.event.get():
