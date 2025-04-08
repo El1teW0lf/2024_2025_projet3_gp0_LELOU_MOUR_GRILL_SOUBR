@@ -16,9 +16,8 @@ class AI:
         self.nation = nation
         self.map = map
         self.start_pos = self.find_start_pos()
-        
-        self.nation.ai = self
-        self.nation.conquer(self.map.map[self.start_pos[0],self.start_pos[1]])
+
+        self.init_nation(self.nation)
 
         self.n_games = 0
         self.epsilon = 0 
@@ -26,6 +25,14 @@ class AI:
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
         self.model = Linear_QNet(20000, 1024, 10000)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
+
+
+    def init_nation(self,nation):
+        self.nation = nation
+        self.start_pos = self.find_start_pos()
+        nation.ai = self
+        nation.conquer(self.map.map[self.start_pos[0],self.start_pos[1]])
+
 
 
     def find_start_pos(self):

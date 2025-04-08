@@ -89,7 +89,7 @@ class Nation():
     
     def _get_score(self):
         
-        self.score = self.ressources["money"] + self.ressources["population"] / 100
+        self.score = (self.ressources["money"] + self.ressources["population"]) / 1000
         
         mul = 1
 

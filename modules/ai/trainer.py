@@ -8,8 +8,9 @@ class Trainer():
         self.record = 0
 
         self.current_tick = 0
-        self.max_tick = 10000
+        self.max_tick = 100
         self.game = game
+        self.total_score = 0
 
     def restart(self):
                     # train long memory, plot result
@@ -28,11 +29,12 @@ class Trainer():
             print('Game', agent.n_games, 'Score', score, 'Record:', self.record)
 
             self.plot_scores.append(score)
-            total_score += score
-            mean_score = total_score / agent.n_games
+            self.total_score += score
+            mean_score = self.total_score / agent.n_games
             self.plot_mean_scores.append(mean_score)
 
-        raise Exception('Game Over')
+        self.current_tick = 0
+        self.game.reset()
 
     def tick(self):
         self.current_tick += 1

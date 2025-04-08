@@ -9,14 +9,17 @@ from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
 
 
 class Main:
-    def __init__(self):
+    def __init__(self,headless=False):
         self.WIDTH, self.HEIGHT = 1000, 800
         self.CELL_SIZE = 8
-
-        self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("Not your life.")
-        self.font = pygame.freetype.Font("Blazma-Regular.ttf", 17)
-        self.clock = pygame.time.Clock()
+        
+        self.headless= headless
+        
+        if not self.headless:
+            self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+            pygame.display.set_caption("Not your life.")
+            self.font = pygame.freetype.Font("Blazma-Regular.ttf", 17)
+            self.clock = pygame.time.Clock()
         self.running = True
 
         self.seed = 0
@@ -24,28 +27,32 @@ class Main:
         self.day_tick = 0
 
         # Initialize loading screen
-        self.loading = LoadingScreen(self.screen, self.font, width=self.WIDTH, height=self.HEIGHT)
-        self.loading.show("Generating world...", progress=0.0)
+        if not self.headless:
+            self.loading = LoadingScreen(self.screen, self.font, width=self.WIDTH, height=self.HEIGHT)
+            self.loading.show("Generating world...", progress=0.0)
 
         # Generate game world
         self._generate_world()
 
     def _generate_world(self):
         self.map = Map(self.seed)
-        self.loading.show("Generating world...", progress=0.2)
+        if not self.headless:
+            self.loading.show("Generating world...", progress=0.2)
 
         self.nations = []
-        for i in range(10):
+        for i in range(1):
             nation = Nation(self.map)
             self.nations.append(nation)
             progress = 0.2 + (i + 1) / 10 * 0.4  # 0.2–0.6 range
-            self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
+            if not self.headless:
+                self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
 
         self.ai = []
         for i, nation in enumerate(self.nations):
             self.ai.append(AI(self.map, nation))
             progress = 0.6 + (i + 1) / 10 * 0.4  # 0.6–1.0 range
-            self.loading.show(f"Initializing AI... ({i + 1}/10)", progress=progress)
+            if not self.headless:
+                self.loading.show(f"Initializing AI... ({i + 1}/10)", progress=progress)
 
         self.trainer = Trainer(self)
 
@@ -78,13 +85,14 @@ class Main:
             draw_line(f"Score : {tile.nation.score}", 220)
 
     def update(self):
-        self.screen.fill((0, 0, 0))
-        self._draw_map()
-        self.tile_pos = (
-            min(99, pygame.mouse.get_pos()[0] // self.CELL_SIZE),
-            min(99, pygame.mouse.get_pos()[1] // self.CELL_SIZE),
-        )
-        self._draw_text()
+        if not self.headless:
+            self.screen.fill((0, 0, 0))
+            self._draw_map()
+            self.tile_pos = (
+                min(99, pygame.mouse.get_pos()[0] // self.CELL_SIZE),
+                min(99, pygame.mouse.get_pos()[1] // self.CELL_SIZE),
+            )
+            self._draw_text()
         for i in self.nations:
              i.tick()
         self.trainer.tick()
@@ -92,13 +100,15 @@ class Main:
     
     def run(self):
         while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
+            if not self.headless:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
 
             self.update()
-            pygame.display.flip()
-            self.clock.tick(60)
+            if not self.headless:
+                pygame.display.flip()
+                self.clock.tick(60)
             self.tick += 1
             if self.tick % 60 == 0:
                 self.day_tick += 1
@@ -106,11 +116,34 @@ class Main:
         pygame.quit()
         print("Game closed.")
 
+    def reset(self):
+        
+        
+        self.map = Map(self.seed)
+        if not self.headless:
+            self.loading.show("Generating world...", progress=0.2)
+
+        self.nations = []
+        for i in range(1):
+            nation = Nation(self.map)
+            self.nations.append(nation)
+            progress = 0.2 + (i + 1) / 10 * 0.4  # 0.2–0.6 range
+            if not self.headless:
+                self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
+
+        for i, nation in enumerate(self.nations):
+            self.ai[i].map = self.map
+            self.ai[i].init_nation(nation)
+        
 
 if __name__ == "__main__":
-    pygame.init()
-    menu = GameMenu()
-    menu.main_menu()
+    
+    headless = False
+    
+    if not headless:
+        pygame.init()
+        menu = GameMenu()
+        menu.main_menu()
 
-    game = Main()
+    game = Main(headless=headless)
     game.run()
