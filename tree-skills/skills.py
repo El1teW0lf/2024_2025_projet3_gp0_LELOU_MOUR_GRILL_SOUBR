@@ -19,7 +19,7 @@ class Skill:
 
 class SkillTree:
     def __init__(self):
-        self.points = 20  # Points de départ
+        self.points = 200  # Points de départ
         self.skills = self._create_skills()
         self.unlocked_skills = []
 
@@ -38,17 +38,25 @@ class SkillTree:
             # Branch: Conquerance
             "Sword Mastery": Skill("Sword Mastery", 5, "Conquerance"),
             "Tactics": Skill("Tactics", 4, "Conquerance", ["Sword Mastery"]),
-            "Combat Resistance": Skill("Combat Resistance", 7, "Conquerance", ["Tactics"]),
+            "Siege Engineering": Skill("Siege Engineering", 7, "Conquerance", ["Tactics"]),
+
+            # Compétence spéciale débloquée uniquement si 2 conditions sont remplies
+            "Art of War": Skill("Art of War", 10, "Secrets Skills", ["Siege Engineering", "Fire Resistance"]),
+            "Art of Sailing": Skill("Art of Sailing", 10, "Secrets Skills", ["Star Navigation", "Fire Resistance"]),
+            "Art of Invasion": Skill("Art of Invasion", 10, "Secrets Skills", ["Star Navigation", "Siege Engineering"]),
+            "Art of Governorship": Skill("Art of Governorship", 20, "Secrets Skills", ["Art of Sailing", "Art of War", "Art of Invasion"]),
         }
 
     def display_skills(self):
         print(f"\n🎯 Points disponibles : {self.points}")
         print("\n🧠 --- Arbre de Compétences ---")
-        branches = ["Navigation", "Resistance", "Conquerance"]
+        branches = ["Navigation", "Resistance", "Conquerance", "Secrets Skills"]
         for branch in branches:
             print(f"\n🌿 [{branch}]")
             for skill in self.skills.values():
                 if skill.branch == branch:
+                    if skill.name in ["Art of War", "Art of Sailing", "Art of Invasion", "Art of Governorship"] and not skill.can_unlock(self.unlocked_skills, self.points):
+                        continue  # Cacher jusqu'à ce que conditions soient réunies
                     status = "✅" if skill.unlocked else "🔒"
                     print(f" {status} {skill.name} (Coût: {skill.cost})")
 
@@ -74,9 +82,6 @@ class SkillTree:
                 print("\n👋 À bientôt, stratège !")
                 break
             self.unlock_skill(choice)
-
-    def _add_points(self,nation):
-        self.points += (nation.ressources["population"]/100000)
 
 
 # --- Lancer le programme ---
