@@ -1,4 +1,27 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from IPython.display import clear_output
+
+def plot(scores, mean_scores):
+    clear_output(wait=True)
+    plt.figure(figsize=(10,5))
+    plt.title('Training...')
+    plt.xlabel('Game')
+    plt.ylabel('Score')
+    plt.plot(scores, label='Score')
+    plt.plot(mean_scores, label='Mean Score')
+    plt.legend()
+    plt.show()
+
+def plot_weights(model):
+    weights = model.linear1.weight.data.cpu().numpy()
+    plt.figure(figsize=(10, 5))
+    plt.imshow(weights, cmap='viridis', aspect='auto')
+    plt.colorbar()
+    plt.title("First Layer Weights")
+    plt.xlabel("Input Neurons")
+    plt.ylabel("Hidden Neurons")
+    plt.show()
 
 class Trainer():
     def __init__(self,game):
@@ -13,18 +36,16 @@ class Trainer():
         self.total_score = 0
 
     def restart(self):
-                    # train long memory, plot result
-
         for agent in self.game.ai:
-
             score = agent.nation.score
-
             agent.n_games += 1
+
+            # Train Long Memory properly
             agent.train_long_memory()
 
             if score > self.record:
                 self.record = score
-                agent.model.save()
+                #agent.model.save()
 
             print('Game', agent.n_games, 'Score', score, 'Record:', self.record)
 
@@ -33,6 +54,7 @@ class Trainer():
             mean_score = self.total_score / agent.n_games
             self.plot_mean_scores.append(mean_score)
 
+            
         self.current_tick = 0
         self.game.reset()
 
@@ -47,6 +69,7 @@ class Trainer():
         for agent in self.game.ai:
 
             state_old = agent.get_state()
+            state_old_flat = state_old.flatten() 
 
             final_move = agent.get_action(state_old)
 
@@ -62,17 +85,18 @@ class Trainer():
 
             if self.game.map.map[y,x] in can_conquer:
                 nation.conquer(self.game.map.map[y,x])
-                reward += self.game.map.map[y,x].value
+                reward += self.game.map.map[y,x].value 
             else:
-                reward -= 100
+                reward -= 10 
 
             print(f"Agent Move: {x};{y} Reward: {reward}")
 
             state_new = agent.get_state()
+            state_new_flat = state_new.flatten()
 
-            agent.train_short_memory(state_old, final_move, reward, state_new,done)
+            agent.train_short_memory(state_old_flat, final_move, reward, state_new_flat,done)
 
-            agent.remember(state_old, final_move, reward, state_new,done)
+            agent.remember(state_old_flat, final_move, reward, state_new_flat,done)
     
         if done:
             self.restart()
