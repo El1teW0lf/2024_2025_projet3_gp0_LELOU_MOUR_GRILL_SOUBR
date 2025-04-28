@@ -3,7 +3,7 @@ import numpy as np
 from modules.map import Map
 
 class GameMenu:
-    def __init__(self, width=1000, height=800):
+    def __init__(self, width=1792, height=1008):
         pygame.init()
 
         # Config
@@ -42,7 +42,7 @@ class GameMenu:
 
         while menu_running:
             # Fond animé ou image de fond - Aussi à remplacer
-            background = pygame.image.load("image/image2.png").convert()
+            background = pygame.image.load("image/background_def1.png").convert()
             background = pygame.transform.scale(background, (self.WIDTH, self.HEIGHT))
             self.screen.blit(background, (0, 0))
 
