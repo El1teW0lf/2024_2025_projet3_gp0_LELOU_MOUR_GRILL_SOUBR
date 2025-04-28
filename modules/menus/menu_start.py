@@ -42,7 +42,7 @@ class GameMenu:
 
         while menu_running:
             # Fond animé ou image de fond - Aussi à remplacer
-            background = pygame.image.load("image/image2.png").convert()
+            background = pygame.image.load("background_def1.png").convert()
             background = pygame.transform.scale(background, (self.WIDTH, self.HEIGHT))
             self.screen.blit(background, (0, 0))
 
