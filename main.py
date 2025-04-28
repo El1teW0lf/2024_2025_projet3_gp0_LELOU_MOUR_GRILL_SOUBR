@@ -9,29 +9,35 @@ from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
 
 
 class Main:
-    def __init__(self,headless=False):
-        self.WIDTH, self.HEIGHT = 1000, 800
+    def __init__(self, headless=False):
+        self.WIDTH, self.HEIGHT = 1792, 1008
         self.CELL_SIZE = 8
-        
-        self.headless= headless
-        
+        self.GRID_SIZE = 100  # 100x100 grid
+
+        self.headless = headless
+
         if not self.headless:
+            pygame.init()
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
             pygame.display.set_caption("Not your life.")
             self.font = pygame.freetype.Font("Blazma-Regular.ttf", 17)
             self.clock = pygame.time.Clock()
-        self.running = True
 
+        self.running = True
         self.seed = 0
         self.tick = 0
         self.day_tick = 0
+
+        # Calculate map offset for centering
+        self.x_offset = (self.WIDTH - self.GRID_SIZE * self.CELL_SIZE) // 2
+        self.y_offset = (self.HEIGHT - self.GRID_SIZE * self.CELL_SIZE) // 2
 
         # Initialize loading screen
         if not self.headless:
             self.loading = LoadingScreen(self.screen, self.font, width=self.WIDTH, height=self.HEIGHT)
             self.loading.show("Generating world...", progress=0.0)
 
-        # Generate game world
+        # Generate the game world
         self._generate_world()
 
     def _generate_world(self):
@@ -57,11 +63,30 @@ class Main:
         self.trainer = Trainer(self)
 
     def _draw_map(self):
-        for x in range(100):
-            for y in range(100):
+        # Optional: draw a border around the map
+        pygame.draw.rect(
+            self.screen,
+            (255, 255, 255),  # White border
+            pygame.Rect(
+                self.x_offset - 1,
+                self.y_offset - 1,
+                self.GRID_SIZE * self.CELL_SIZE + 2,
+                self.GRID_SIZE * self.CELL_SIZE + 2
+            ),
+            2  # Border thickness
+        )
+
+        # Draw the map tiles
+        for x in range(self.GRID_SIZE):
+            for y in range(self.GRID_SIZE):
                 tile = self.map.map[x, y]
                 rgb_color = pygame.Color(f"#{tile.color}")
-                rect = pygame.Rect(x * self.CELL_SIZE, y * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE)
+                rect = pygame.Rect(
+                    self.x_offset + x * self.CELL_SIZE,
+                    self.y_offset + y * self.CELL_SIZE,
+                    self.CELL_SIZE,
+                    self.CELL_SIZE
+                )
                 pygame.draw.rect(self.screen, rgb_color, rect)
 
     def _draw_text(self):
@@ -69,35 +94,39 @@ class Main:
 
         def draw_line(text, y_offset):
             surface, _ = self.font.render(text, (255, 255, 255))
-            self.screen.blit(surface, (810, y_offset))
+            self.screen.blit(surface, (20, y_offset))  # Moved text to the left side
 
         draw_line(f"Tile ({self.tile_pos[0]},{self.tile_pos[1]})", 20)
-        draw_line(f"Biome : {tile.biome}", 40)
-        draw_line(f"Nation : ", 60)
-        draw_line(f"{tile.nation.name if tile.nation else None}", 80)
-        draw_line(f"Value : {tile.value}", 100)
+        draw_line(f"Biome: {tile.biome}", 40)
+        draw_line(f"Nation: {tile.nation.name if tile.nation else 'None'}", 60)
+        draw_line(f"Value: {tile.value}", 80)
 
         if tile.nation:
-            draw_line(f"{tile.nation.name}", 140)
-            draw_line("Info panel", 160)
-            draw_line(f"Population : {tile.nation.ressources['population']}", 180)
-            draw_line(f"Money : {tile.nation.ressources['money']}", 200)
-            draw_line(f"Score : {tile.nation.score}", 220)
+            draw_line("--- Nation Info ---", 120)
+            draw_line(f"Population: {tile.nation.ressources['population']}", 140)
+            draw_line(f"Money: {tile.nation.ressources['money']}", 160)
+            draw_line(f"Score: {tile.nation.score}", 180)
 
     def update(self):
         if not self.headless:
             self.screen.fill((0, 0, 0))
             self._draw_map()
-            self.tile_pos = (
-                min(99, pygame.mouse.get_pos()[0] // self.CELL_SIZE),
-                min(99, pygame.mouse.get_pos()[1] // self.CELL_SIZE),
-            )
+
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            map_x = (mouse_x - self.x_offset) // self.CELL_SIZE
+            map_y = (mouse_y - self.y_offset) // self.CELL_SIZE
+
+            if 0 <= map_x < self.GRID_SIZE and 0 <= map_y < self.GRID_SIZE:
+                self.tile_pos = (map_x, map_y)
+            else:
+                self.tile_pos = (0, 0)
+
             self._draw_text()
-        for i in self.nations:
-             i.tick()
+
+        for nation in self.nations:
+            nation.tick()
         self.trainer.tick()
-    
-    
+
     def run(self):
         while self.running:
             if not self.headless:
@@ -109,6 +138,7 @@ class Main:
             if not self.headless:
                 pygame.display.flip()
                 self.clock.tick(60)
+
             self.tick += 1
             if self.tick % 60 == 0:
                 self.day_tick += 1
@@ -117,8 +147,6 @@ class Main:
         print("Game closed.")
 
     def reset(self):
-        
-        
         self.map = Map(self.seed)
         if not self.headless:
             self.loading.show("Generating world...", progress=0.2)
@@ -127,19 +155,18 @@ class Main:
         for i in range(1):
             nation = Nation(self.map)
             self.nations.append(nation)
-            progress = 0.2 + (i + 1) / 10 * 0.4  # 0.2–0.6 range
+            progress = 0.2 + (i + 1) / 10 * 0.4
             if not self.headless:
                 self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
 
         for i, nation in enumerate(self.nations):
             self.ai[i].map = self.map
             self.ai[i].init_nation(nation)
-        
+
 
 if __name__ == "__main__":
-    
     headless = False
-    
+
     if not headless:
         pygame.init()
         menu = GameMenu()
