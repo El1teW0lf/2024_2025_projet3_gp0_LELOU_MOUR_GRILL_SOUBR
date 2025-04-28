@@ -3,7 +3,7 @@ import numpy as np
 from modules.map import Map
 
 class GameMenu:
-    def __init__(self, width=800, height=800):
+    def __init__(self, width=1792, height=1008):
         pygame.init()
 
         # Config
@@ -23,14 +23,16 @@ class GameMenu:
         self.clock = pygame.time.Clock()
 
         # Load images - Remplacer les images
-        self.play_img = pygame.image.load("image4.png").convert_alpha()
-        self.quit_img = pygame.image.load("image5.png").convert_alpha()
-        self.play_img = pygame.transform.scale(self.play_img, (240, 60))
-        self.quit_img = pygame.transform.scale(self.quit_img, (240, 60))
+        self.play_img = pygame.image.load("image/Start.png").convert_alpha()
+        self.quit_img = pygame.image.load("image/Quit.png").convert_alpha()
+        self.title_img = pygame.image.load("image/Neural_Realms.png").convert_alpha()
+        #self.play_img = pygame.transform.scale(self.play_img, (162, 65))
+        #self.quit_img = pygame.transform.scale(self.quit_img, (113, 65))
 
         # Button rects
         self.play_rect = self.play_img.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2 - 20))
-        self.quit_rect = self.quit_img.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2 + 70))
+        self.quit_rect = self.quit_img.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2 + 120))
+        self.title_rect = self.title_img.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2 - 360))
 
     def draw_text(self, text, font, color, surface, x, y):
         textobj = font.render(text, True, color)
@@ -42,15 +44,16 @@ class GameMenu:
 
         while menu_running:
             # Fond animé ou image de fond - Aussi à remplacer
-            background = pygame.image.load("image2.png").convert()
+            background = pygame.image.load("image/background_def1.png").convert()
             background = pygame.transform.scale(background, (self.WIDTH, self.HEIGHT))
             self.screen.blit(background, (0, 0))
 
-            self.draw_text("Not your life.", self.font, (255, 255, 255), self.screen, self.WIDTH // 2, self.HEIGHT // 4)
+            #self.draw_text("Not your life.", self.font, (255, 255, 255), self.screen, self.WIDTH // 2, self.HEIGHT // 4)
 
             # Affichage des boutons
             self.screen.blit(self.play_img, self.play_rect.topleft)
             self.screen.blit(self.quit_img, self.quit_rect.topleft)
+            self.screen.blit(self.title_img, self.title_rect.topleft)
 
             # Survol
             hovered_play = self.play_rect.collidepoint(pygame.mouse.get_pos())
