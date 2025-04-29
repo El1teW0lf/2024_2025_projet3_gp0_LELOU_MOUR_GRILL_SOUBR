@@ -77,26 +77,27 @@ class Trainer():
 
             shape = (100, 100)
 
-            y, x = np.unravel_index(final_move, shape)
+            if final_move != None:
+                y, x = np.unravel_index(final_move, shape)
 
-            can_conquer = agent.nation._possible_conquer()
+                can_conquer = agent.nation._possible_conquer()
 
-            reward = 0
+                reward = 0
 
-            if self.game.map.map[y,x] in can_conquer:
-                nation.conquer(self.game.map.map[y,x])
-                reward += self.game.map.map[y,x].value 
-            else:
-                reward -= 10 
+                if self.game.map.map[y,x] in can_conquer:
+                    nation.conquer(self.game.map.map[y,x])
+                    reward += self.game.map.map[y,x].value 
+                else:
+                    reward -= 10 
 
-            print(f"Agent Move: {x};{y} Reward: {reward}")
+                print(f"Agent Move: {x};{y} Reward: {reward}",final_move)
 
-            state_new = agent.get_state()
-            state_new_flat = state_new.flatten()
+                state_new = agent.get_state()
+                state_new_flat = state_new.flatten()
 
-            agent.train_short_memory(state_old_flat, final_move, reward, state_new_flat,done)
+                agent.train_short_memory(state_old_flat, final_move, reward, state_new_flat,done)
 
-            agent.remember(state_old_flat, final_move, reward, state_new_flat,done)
+                agent.remember(state_old_flat, final_move, reward, state_new_flat,done)
     
         if done:
             self.restart()

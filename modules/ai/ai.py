@@ -44,6 +44,8 @@ class AI:
             for x in range(100):
                 if self.map.map[y, x] in can_conquer:
                     mask2d[y, x] = True
+                else:
+                    mask2d[y, x] = False
         return mask2d.flatten()
 
 

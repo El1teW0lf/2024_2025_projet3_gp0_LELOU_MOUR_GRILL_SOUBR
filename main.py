@@ -39,6 +39,7 @@ class Main:
 
         # Generate the game world
         self._generate_world()
+        self.reset()
 
     def _generate_world(self):
         self.map = Map(self.seed)
