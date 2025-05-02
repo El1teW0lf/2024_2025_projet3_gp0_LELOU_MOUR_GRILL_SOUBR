@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 from IPython.display import clear_output
 
 def plot(scores, mean_scores):
@@ -31,11 +32,15 @@ class Trainer():
         self.record = 0
 
         self.current_tick = 0
-        self.max_tick = 100
+        self.max_tick = 1000
         self.game = game
         self.total_score = 0
+        self.epoch = 0
+
+        self.bar = tqdm(total=self.max_tick,desc=f"Epoch: {self.epoch},Record: {self.record}")
 
     def restart(self):
+        self.epoch += 1
         for agent in self.game.ai:
             score = agent.nation.score
             agent.n_games += 1
@@ -45,7 +50,7 @@ class Trainer():
 
             if score > self.record:
                 self.record = score
-                #agent.model.save()
+                agent.model.save()
 
             print('Game', agent.n_games, 'Score', score, 'Record:', self.record)
 
@@ -57,6 +62,7 @@ class Trainer():
             
         self.current_tick = 0
         self.game.reset()
+        self.bar = tqdm(total=self.max_tick,desc=f"Epoch: {self.epoch},Record: {self.record}")
 
     def tick(self):
         self.current_tick += 1
@@ -86,11 +92,10 @@ class Trainer():
 
                 if self.game.map.map[y,x] in can_conquer:
                     nation.conquer(self.game.map.map[y,x])
-                    reward += self.game.map.map[y,x].value 
+                    reward += (self.game.map.map[y,x].value*(self.game.map.map[y,x].pop/10))/1000
                 else:
                     reward -= 10 
 
-                print(f"Agent Move: {x};{y} Reward: {reward}",final_move)
 
                 state_new = agent.get_state()
                 state_new_flat = state_new.flatten()
@@ -99,6 +104,8 @@ class Trainer():
 
                 agent.remember(state_old_flat, final_move, reward, state_new_flat,done)
     
+                self.bar.update()
+
         if done:
             self.restart()
             return

@@ -39,6 +39,7 @@ class AI:
         the tile at that index is conquerable this turn.
         """
         can_conquer = self.nation._possible_conquer()
+
         mask2d = np.zeros((100, 100), dtype=bool)
         for y in range(100):
             for x in range(100):
@@ -95,6 +96,7 @@ class AI:
         # random moves: tradeoff exploration / exploitation
         self.epsilon = max(5, 80 - 0.5 * self.n_games)
         action_mask = self.get_action_mask()  # boolean array of size 10000
+
 
         if random.randint(0, 200) < self.epsilon:
             # random valid move only

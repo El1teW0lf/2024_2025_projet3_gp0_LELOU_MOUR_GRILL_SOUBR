@@ -24,7 +24,7 @@ class Main:
             self.clock = pygame.time.Clock()
 
         self.running = True
-        self.seed = 0
+        self.seed = 1
         self.tick = 0
         self.day_tick = 0
 
@@ -144,6 +144,7 @@ class Main:
             if self.tick % 60 == 0:
                 self.day_tick += 1
 
+   
         pygame.quit()
         print("Game closed.")
 
@@ -166,7 +167,7 @@ class Main:
 
 
 if __name__ == "__main__":
-    headless = False
+    headless = True
 
     if not headless:
         pygame.init()

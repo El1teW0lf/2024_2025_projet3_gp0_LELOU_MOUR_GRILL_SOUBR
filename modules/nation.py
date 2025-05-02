@@ -8,7 +8,7 @@ class Nation():
         self.value = 0
         self.tiles = []
         self.ressources = {
-            "money": 1000,
+            "money": 10000,
             "population":0,
             "Flowers":0,
             "Sand":0,
@@ -103,6 +103,7 @@ class Nation():
 
         possibles = []
 
+
         for tile in self.tiles:
 
             directions = [(-1,0),(1,0),(0,1),(0,-1)]
@@ -113,13 +114,15 @@ class Nation():
                 x = min(99,max(0,x))
                 y = min(99,max(0,y))
 
-                new_tile = self.map.map[y,x]
+                new_tile = self.map.map[x,y]
+
 
                 if new_tile.nation == None and new_tile.value <= self.ressources["money"] and new_tile.biome != "water":
                     possibles.append(new_tile)
 
+
         return possibles
     
     def tick(self):
-        self.ressources["money"] += self.ressources["population"] * 0.05
+        self.ressources["money"] += self.ressources["population"] * 0.1
         self._get_score()
