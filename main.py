@@ -167,7 +167,7 @@ class Main:
 
 
 if __name__ == "__main__":
-    headless = True
+    headless = False
 
     if not headless:
         pygame.init()
