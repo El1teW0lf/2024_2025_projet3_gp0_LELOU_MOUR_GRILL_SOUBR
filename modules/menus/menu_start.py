@@ -1,5 +1,6 @@
 import pygame
 import numpy as np
+from PIL import Image
 from modules.map import Map
 
 class GameMenu:
@@ -22,17 +23,36 @@ class GameMenu:
         self.font = pygame.font.SysFont(None, 60)
         self.clock = pygame.time.Clock()
 
-        # Load images - Remplacer les images
+        # Load images
         self.play_img = pygame.image.load("image/Start.png").convert_alpha()
         self.quit_img = pygame.image.load("image/Quit.png").convert_alpha()
         self.title_img = pygame.image.load("image/Neural_Realms.png").convert_alpha()
-        #self.play_img = pygame.transform.scale(self.play_img, (162, 65))
-        #self.quit_img = pygame.transform.scale(self.quit_img, (113, 65))
 
         # Button rects
         self.play_rect = self.play_img.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2 - 20))
         self.quit_rect = self.quit_img.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2 + 120))
         self.title_rect = self.title_img.get_rect(center=(self.WIDTH // 2, self.HEIGHT // 2 - 360))
+
+        # Load GIF frames
+        self.cow_frames = self.load_gif_frames("image/PolishCow8Bit.gif")
+        self.current_cow_frame = 0
+        self.cow_frame_duration = 100  # ms per frame (10 fps)
+        self.last_cow_frame_update = pygame.time.get_ticks()
+
+    def load_gif_frames(self, path):
+        pil_gif = Image.open(path)
+        frames = []
+
+        try:
+            while True:
+                frame = pil_gif.convert("RGBA")
+                pygame_image = pygame.image.fromstring(frame.tobytes(), frame.size, frame.mode)
+                frames.append(pygame.transform.scale(pygame_image, (224, 128)))  # Resize if needed
+                pil_gif.seek(pil_gif.tell() + 1)
+        except EOFError:
+            pass
+
+        return frames
 
     def draw_text(self, text, font, color, surface, x, y):
         textobj = font.render(text, True, color)
@@ -43,19 +63,17 @@ class GameMenu:
         menu_running = True
 
         while menu_running:
-            # Fond animé ou image de fond - Aussi à remplacer
+            # Fond
             background = pygame.image.load("image/background_def1.png").convert()
             background = pygame.transform.scale(background, (self.WIDTH, self.HEIGHT))
             self.screen.blit(background, (0, 0))
 
-            #self.draw_text("Not your life.", self.font, (255, 255, 255), self.screen, self.WIDTH // 2, self.HEIGHT // 4)
-
-            # Affichage des boutons
+            # Boutons
             self.screen.blit(self.play_img, self.play_rect.topleft)
             self.screen.blit(self.quit_img, self.quit_rect.topleft)
             self.screen.blit(self.title_img, self.title_rect.topleft)
 
-            # Survol
+            # Gestion survol
             hovered_play = self.play_rect.collidepoint(pygame.mouse.get_pos())
             hovered_quit = self.quit_rect.collidepoint(pygame.mouse.get_pos())
 
@@ -69,6 +87,18 @@ class GameMenu:
                     elif hovered_quit:
                         pygame.quit()
                         exit()
+
+            # Mise à jour animation vache
+            now = pygame.time.get_ticks()
+            if now - self.last_cow_frame_update >= self.cow_frame_duration:
+                self.current_cow_frame = (self.current_cow_frame + 1) % len(self.cow_frames)
+                self.last_cow_frame_update = now
+
+            # Affichage de la vache animée
+            cow_image = self.cow_frames[self.current_cow_frame]
+            self.screen.blit(cow_image, (100, self.HEIGHT - 200))  # Position modifiable
+            self.screen.blit(cow_image, (400, self.HEIGHT - 150))  # Position modifiable
+            self.screen.blit(cow_image, (600, self.HEIGHT - 400))  # Position modifiable
 
             pygame.display.update()
             self.clock.tick(60)
