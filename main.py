@@ -6,6 +6,7 @@ from modules.ai.trainer import Trainer
 from modules.nation import Nation
 from modules.menus.menu_start import GameMenu
 from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
+from modules.menus.tileinfo import TileInfo
 
 
 class Main:
@@ -19,7 +20,7 @@ class Main:
         if not self.headless:
             pygame.init()
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-            pygame.display.set_caption("Not your life.")
+            pygame.display.set_caption("Neural Realms")
             self.font = pygame.freetype.Font("Blazma-Regular.ttf", 17)
             self.clock = pygame.time.Clock()
 
@@ -97,16 +98,12 @@ class Main:
             surface, _ = self.font.render(text, (255, 255, 255))
             self.screen.blit(surface, (20, y_offset))  # Moved text to the left side
 
-        draw_line(f"Tile ({self.tile_pos[0]},{self.tile_pos[1]})", 20)
-        draw_line(f"Biome: {tile.biome}", 40)
-        draw_line(f"Nation: {tile.nation.name if tile.nation else 'None'}", 60)
-        draw_line(f"Value: {tile.value}", 80)
+        tile_info = TileInfo(self.tile_pos, tile)
+        lines = tile_info.get_info_lines()
 
-        if tile.nation:
-            draw_line("--- Nation Info ---", 120)
-            draw_line(f"Population: {tile.nation.ressources['population']}", 140)
-            draw_line(f"Money: {tile.nation.ressources['money']}", 160)
-            draw_line(f"Score: {tile.nation.score}", 180)
+        for i, line in enumerate(lines):
+            draw_line(line, 20 + i * 20)
+            
 
     def update(self):
         if not self.headless:
