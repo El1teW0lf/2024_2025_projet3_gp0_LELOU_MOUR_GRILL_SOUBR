@@ -125,12 +125,12 @@ class Tile():
 
     def score_tile_temperature(self):
         t = self.temp
-        score = (-0.1 * t) * (t - 40)
+        score = -1/5 * t ** 2 + 6*t
         return score
 
     def score_tile(self):
         score = 0
-        score += self.score_tile_resources()
-        score += self.score_tile_biome()
-        score += self.score_tile_temperature()
+        score += 2*self.score_tile_resources()
+        score += 1.5*self.score_tile_biome()
+        score += 1.25*self.score_tile_temperature()
         return int(score)

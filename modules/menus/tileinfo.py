@@ -12,6 +12,7 @@ class TileInfo:
         ]
 
         if self.tile.nation : 
+            lines.append("")
             lines.append("--- Nation Info ---")
             lines.append(f"Population : {self.tile.nation.ressources['population']}")
             lines.append(f"Money : {int(self.tile.nation.ressources['money'])}")
