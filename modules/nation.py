@@ -117,7 +117,7 @@ class Nation():
                 new_tile = self.map.map[x,y]
 
 
-                if new_tile.nation == None and new_tile.value <= self.ressources["money"] and new_tile.biome != "water":
+                if  new_tile.value <= self.ressources["money"] and new_tile.biome != "water":
                     possibles.append(new_tile)
 
 

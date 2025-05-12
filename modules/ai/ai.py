@@ -34,10 +34,6 @@ class AI:
         nation.conquer(self.map.map[self.start_pos[0],self.start_pos[1]])
 
     def get_action_mask(self):
-        """
-        Returns a 1D boolean array of length 10000 where True means
-        the tile at that index is conquerable this turn.
-        """
         can_conquer = self.nation._possible_conquer()
 
         mask2d = np.zeros((100, 100), dtype=bool)
@@ -59,15 +55,14 @@ class AI:
     
     def get_state(self):
         can_conquer = self.nation._possible_conquer()
-        mask = np.zeros((100, 100), dtype=int)
+        mask = np.zeros((100, 100), dtype=float)
 
         for y in range(100):
             for x in range(100):
                 i = self.map.map[y, x]
 
                 if i in can_conquer:
-                    mask[y, x] = (biomes[i.biome]["code"]+1)/7
-
+                    mask[y, x] = ((biomes[i.biome]["code"]+1)/7)*0.3 + (((i.value+1)/1000)*0.5) + (((i.pop+1)/100)*0.2)
         return mask
 
 
@@ -99,17 +94,13 @@ class AI:
 
 
         if random.randint(0, 200) < self.epsilon:
-            # random valid move only
             valid_indices = np.nonzero(action_mask)[0]
             if len(valid_indices) == 0:
-                # no valid move—handle as you like, e.g. pass or random
                 return None
             return int(np.random.choice(valid_indices))
         else:
-            # exploit: mask out invalid Q-values
             state0 = torch.tensor(state.flatten(), dtype=torch.float)
-            q_vals = self.model(state0)            # shape: [10000]
-            # set impossible actions to a very low number
+            q_vals = self.model(state0)            
             invalid = ~torch.tensor(action_mask, dtype=torch.bool)
             q_vals[invalid] = -float('inf')
             return int(torch.argmax(q_vals).item())

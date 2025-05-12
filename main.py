@@ -17,6 +17,8 @@ class Main:
 
         self.headless = headless
 
+        self.ai_count = 1
+
         if not self.headless:
             pygame.init()
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -48,19 +50,19 @@ class Main:
             self.loading.show("Generating world...", progress=0.2)
 
         self.nations = []
-        for i in range(1):
+        for i in range(self.ai_count):
             nation = Nation(self.map)
             self.nations.append(nation)
-            progress = 0.2 + (i + 1) / 10 * 0.4  # 0.2–0.6 range
+            progress = 0.2 + (i + 1) / self.ai_count * 0.4  # 0.2–0.6 range
             if not self.headless:
-                self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
+                self.loading.show(f"Spawning nations... ({i + 1}/{self.ai_count})", progress=progress)
 
         self.ai = []
         for i, nation in enumerate(self.nations):
             self.ai.append(AI(self.map, nation))
-            progress = 0.6 + (i + 1) / 10 * 0.4  # 0.6–1.0 range
+            progress = 0.6 + (i + 1) / self.ai_count * 0.4  # 0.6–1.0 range
             if not self.headless:
-                self.loading.show(f"Initializing AI... ({i + 1}/10)", progress=progress)
+                self.loading.show(f"Initializing AI... ({i + 1}/{self.ai_count})", progress=progress)
 
         self.trainer = Trainer(self)
 
@@ -151,12 +153,12 @@ class Main:
             self.loading.show("Generating world...", progress=0.2)
 
         self.nations = []
-        for i in range(1):
+        for i in range(self.ai_count):
             nation = Nation(self.map)
             self.nations.append(nation)
-            progress = 0.2 + (i + 1) / 10 * 0.4
+            progress = 0.2 + (i + 1) / self.ai_count * 0.4
             if not self.headless:
-                self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
+                self.loading.show(f"Spawning nations... ({i + 1}/{self.ai_count})", progress=progress)
 
         for i, nation in enumerate(self.nations):
             self.ai[i].map = self.map
