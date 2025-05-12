@@ -101,16 +101,14 @@ class Main:
         line_height = 20  # Hauteur entre chaque ligne
         total_height = len(lines) * line_height
 
-        # Centrage vertical
-        start_y = (self.HEIGHT - total_height) // 6
+        # Centr
 
-        # Décalage horizontal à gauche, mais pas complètement collé
-        text_x = self.WIDTH // 12  # Plus la valeur est grande, plus c’est proche du bord
+        
 
         # Affichage ligne par ligne
         for i, line in enumerate(lines):
             surface, _ = self.font.render(line, (255, 255, 255))
-            self.screen.blit(surface, (text_x, start_y + i * line_height))
+            self.screen.blit(surface, (20, 20 + i * line_height))
 
             
 
