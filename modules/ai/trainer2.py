@@ -1,19 +1,28 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from IPython.display import clear_output
+import sys
 
 # Paramètres de contrôle
-MAX_TICK = 1000
+MAX_TICK = 60
 MAX_CONQUÊTES_PAR_TOUR = 5
 MAX_SCORE = 1000
 MEMORY_LIMIT = 100_000
 REWARD_SUCCESS = 1
 REWARD_FAIL = -10
 
+# === Affichage graphique persistent ===
+PLOT_FIGURE = None
+
 def plot(scores, mean_scores):
-    clear_output(wait=True)
-    plt.figure(figsize=(10,5))
+    global PLOT_FIGURE
+
+    if PLOT_FIGURE is None:
+        plt.ion()
+        PLOT_FIGURE = plt.figure(figsize=(10, 5))
+    else:
+        plt.clf()
+
     plt.title('Training...')
     plt.xlabel('Game')
     plt.ylabel('Score')
@@ -22,13 +31,14 @@ def plot(scores, mean_scores):
 
     if len(scores) >= 10:
         window = 10
-        rolling_mean = np.convolve(scores, np.ones(window)/window, mode='valid')
-        plt.plot(range(window-1, len(scores)), rolling_mean, label=f'{window}-game Rolling Mean')
+        rolling_mean = np.convolve(scores, np.ones(window) / window, mode='valid')
+        plt.plot(range(window - 1, len(scores)), rolling_mean, label=f'{window}-game Rolling Mean')
 
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
-    plt.show()
+    plt.draw()
+    plt.pause(0.001)
 
 def plot_weights(model):
     weights = model.linear1.weight.data.cpu().numpy()
@@ -38,6 +48,7 @@ def plot_weights(model):
     plt.title("First Layer Weights")
     plt.xlabel("Input Neurons")
     plt.ylabel("Hidden Neurons")
+    plt.tight_layout()
     plt.show()
 
 class Trainer():
@@ -73,7 +84,9 @@ class Trainer():
             mean_score = self.total_score / agent.n_games
             self.plot_mean_scores.append(mean_score)
 
-        plot(self.plot_scores, self.plot_mean_scores)
+        # Affiche tous les 5 epochs pour limiter la charge
+        if self.epoch % 5 == 0:
+            plot(self.plot_scores, self.plot_mean_scores)
 
         self.current_tick = 0
         self.game.reset()
@@ -81,9 +94,7 @@ class Trainer():
 
     def normalize_state(self, state):
         flat = state.flatten()
-        if np.max(flat) > 0:
-            return flat / np.max(flat)
-        return flat
+        return flat / np.max(flat) if np.max(flat) > 0 else flat
 
     def tick(self):
         self.current_tick += 1
@@ -94,19 +105,18 @@ class Trainer():
             state_old_flat = self.normalize_state(state_old)
 
             final_move = agent.get_action(state_old)
-
             nation = agent.nation
-            nation.nb_conquêtes = 0  # Reset conquêtes pour ce tick
+            nation.nb_conquêtes = 0  # Reset conquêtes par tick
+
             shape = (100, 100)
+            reward = 0
 
             if final_move is not None:
                 y, x = np.unravel_index(final_move, shape)
                 tile = self.game.map.map[y, x]
-                reward = 0
 
-                # Limite : trop de conquêtes
                 if nation.nb_conquêtes >= MAX_CONQUÊTES_PAR_TOUR:
-                    reward += REWARD_FAIL  # Pénalité
+                    reward += REWARD_FAIL
                 elif tile in nation._possible_conquer():
                     nation.conquer(tile)
                     nation.nb_conquêtes += 1
@@ -114,7 +124,6 @@ class Trainer():
                 else:
                     reward += REWARD_FAIL
 
-                # Limiter score total
                 if nation.score >= MAX_SCORE:
                     done = True
                     reward -= 5
