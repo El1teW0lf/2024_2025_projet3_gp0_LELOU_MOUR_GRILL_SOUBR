@@ -2,7 +2,7 @@ import pygame
 import pygame.freetype
 from modules.map import Map
 from modules.ai.ai import AI
-from modules.ai.trainer import Trainer
+from modules.ai.trainer2 import Trainer
 from modules.nation import Nation
 from modules.menus.menu_start import GameMenu
 from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
@@ -96,15 +96,24 @@ class Main:
     def _draw_text(self):
         tile = self.map.map[self.tile_pos[0], self.tile_pos[1]]
 
-        def draw_line(text, y_offset):
-            surface, _ = self.font.render(text, (255, 255, 255))
-            self.screen.blit(surface, (20, y_offset))  # Moved text to the left side
-
         tile_info = TileInfo(self.tile_pos, tile)
         lines = tile_info.get_info_lines()
 
+        # Calcul de la hauteur totale du bloc de texte
+        line_height = 20  # Hauteur entre chaque ligne
+        total_height = len(lines) * line_height
+
+        # Centrage vertical
+        start_y = (self.HEIGHT - total_height) // 6
+
+        # Décalage horizontal à gauche, mais pas complètement collé
+        text_x = self.WIDTH // 12  # Plus la valeur est grande, plus c’est proche du bord
+
+        # Affichage ligne par ligne
         for i, line in enumerate(lines):
-            draw_line(line, 20 + i * 20)
+            surface, _ = self.font.render(line, (255, 255, 255))
+            self.screen.blit(surface, (text_x, start_y + i * line_height))
+
             
 
     def update(self):

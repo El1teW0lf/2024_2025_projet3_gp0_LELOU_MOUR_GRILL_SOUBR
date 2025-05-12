@@ -47,7 +47,7 @@ class GameMenu:
             while True:
                 frame = pil_gif.convert("RGBA")
                 pygame_image = pygame.image.fromstring(frame.tobytes(), frame.size, frame.mode)
-                frames.append(pygame.transform.scale(pygame_image, (224, 128)))  # Resize if needed
+                frames.append(pygame.transform.scale(pygame_image, (150, 86)))  # Resize if needed
                 pil_gif.seek(pil_gif.tell() + 1)
         except EOFError:
             pass
@@ -68,6 +68,22 @@ class GameMenu:
             background = pygame.transform.scale(background, (self.WIDTH, self.HEIGHT))
             self.screen.blit(background, (0, 0))
 
+            # Mise à jour animation vache
+            now = pygame.time.get_ticks()
+            if now - self.last_cow_frame_update >= self.cow_frame_duration:
+                self.current_cow_frame = (self.current_cow_frame + 1) % len(self.cow_frames)
+                self.last_cow_frame_update = now
+
+            # Affichage de la vache animée
+            cow_image = self.cow_frames[self.current_cow_frame]
+            self.screen.blit(cow_image, (100, self.HEIGHT - 200))  
+            self.screen.blit(cow_image, (500, self.HEIGHT - 180))  
+            self.screen.blit(cow_image, (780, self.HEIGHT - 420))  
+            self.screen.blit(cow_image, (1000, self.HEIGHT - 250))  
+            self.screen.blit(cow_image, (1500, self.HEIGHT - 140))  
+            self.screen.blit(cow_image, (1620, self.HEIGHT - 820))  
+            self.screen.blit(cow_image, (1300, self.HEIGHT - 500))  
+            self.screen.blit(cow_image, (220, self.HEIGHT - 600))  
             # Boutons
             self.screen.blit(self.play_img, self.play_rect.topleft)
             self.screen.blit(self.quit_img, self.quit_rect.topleft)
@@ -88,17 +104,7 @@ class GameMenu:
                         pygame.quit()
                         exit()
 
-            # Mise à jour animation vache
-            now = pygame.time.get_ticks()
-            if now - self.last_cow_frame_update >= self.cow_frame_duration:
-                self.current_cow_frame = (self.current_cow_frame + 1) % len(self.cow_frames)
-                self.last_cow_frame_update = now
-
-            # Affichage de la vache animée
-            cow_image = self.cow_frames[self.current_cow_frame]
-            self.screen.blit(cow_image, (100, self.HEIGHT - 200))  # Position modifiable
-            self.screen.blit(cow_image, (400, self.HEIGHT - 150))  # Position modifiable
-            self.screen.blit(cow_image, (600, self.HEIGHT - 400))  # Position modifiable
+            
 
             pygame.display.update()
             self.clock.tick(60)

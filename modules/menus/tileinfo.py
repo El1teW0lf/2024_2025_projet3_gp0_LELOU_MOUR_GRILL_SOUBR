@@ -6,7 +6,7 @@ class TileInfo:
     def get_info_lines(self):
         lines = [
             f"Tile : ({self.tile_pos[0]}, {self.tile_pos[1]})",
-            f"Biome : {self.tile.biome}"
+            f"Biome : {self.tile.biome}",
             f"Nation : {self.tile.nation.name if self.tile.nation else 'None'}",
             f"Value : {self.tile.value}"
         ]
