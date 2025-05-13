@@ -76,14 +76,9 @@ class GameMenu:
 
             # Affichage de la vache animée
             cow_image = self.cow_frames[self.current_cow_frame]
-            self.screen.blit(cow_image, (100, self.HEIGHT - 200))  
-            self.screen.blit(cow_image, (500, self.HEIGHT - 180))  
-            self.screen.blit(cow_image, (780, self.HEIGHT - 420))  
-            self.screen.blit(cow_image, (1000, self.HEIGHT - 250))  
-            self.screen.blit(cow_image, (1500, self.HEIGHT - 140))  
-            self.screen.blit(cow_image, (1620, self.HEIGHT - 820))  
+            
             self.screen.blit(cow_image, (1300, self.HEIGHT - 500))  
-            self.screen.blit(cow_image, (220, self.HEIGHT - 600))  
+              
             # Boutons
             self.screen.blit(self.play_img, self.play_rect.topleft)
             self.screen.blit(self.quit_img, self.quit_rect.topleft)
