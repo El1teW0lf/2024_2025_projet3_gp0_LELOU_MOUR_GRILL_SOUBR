@@ -32,7 +32,7 @@ class Trainer():
         self.record = 0
 
         self.current_tick = 0
-        self.max_tick = 1000
+        self.max_tick = 100
         self.game = game
         self.total_score = 0
         self.epoch = 0
@@ -50,7 +50,7 @@ class Trainer():
 
             if score > self.record:
                 self.record = score
-                agent.model.save()
+                #agent.model.save()
 
             print('Game', agent.n_games, 'Score', score, 'Record:', self.record)
 
@@ -106,6 +106,7 @@ class Trainer():
     
                 self.bar.update()
 
+        self.current_tick += 1
         if done:
             self.restart()
             return
