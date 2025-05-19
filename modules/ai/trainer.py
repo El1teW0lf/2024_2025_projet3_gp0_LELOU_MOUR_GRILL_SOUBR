@@ -32,7 +32,7 @@ class Trainer():
         self.record = 0
 
         self.current_tick = 0
-        self.max_tick = 100
+        self.max_tick = 1000
         self.game = game
         self.total_score = 0
         self.epoch = 0
@@ -106,7 +106,6 @@ class Trainer():
     
                 self.bar.update()
 
-        self.current_tick += 1
         if done:
             self.restart()
             return

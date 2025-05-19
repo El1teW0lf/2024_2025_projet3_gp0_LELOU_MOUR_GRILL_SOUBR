@@ -3,7 +3,7 @@ import random
 import numpy as np
 from collections import deque
 from modules.ai.model import Linear_QNet, QTrainer
-from modules.ai.helper import plot
+
 
 from modules.generation.biomes import biomes
 
