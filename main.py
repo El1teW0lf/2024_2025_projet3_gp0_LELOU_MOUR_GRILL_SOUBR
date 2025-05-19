@@ -5,15 +5,15 @@ from modules.ai.ai import AI
 from modules.ai.trainer import Trainer
 from modules.nation import Nation
 from modules.menus.menu_start import GameMenu
-from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
+from modules.menus.loading_screen import LoadingScreen
 from modules.menus.tileinfo import TileInfo
-
+import random
 
 class Main:
     def __init__(self, headless=False):
         self.WIDTH, self.HEIGHT = 1792, 1008
         self.CELL_SIZE = 8
-        self.GRID_SIZE = 100  # 100x100 grid
+        self.GRID_SIZE = 100 
 
         self.headless = headless
 
@@ -25,20 +25,17 @@ class Main:
             self.clock = pygame.time.Clock()
 
         self.running = True
-        self.seed = 1
+        self.seed = random.randint(0,9999999999)
         self.tick = 0
         self.day_tick = 0
 
-        # Calculate map offset for centering
         self.x_offset = (self.WIDTH - self.GRID_SIZE * self.CELL_SIZE) // 2
         self.y_offset = (self.HEIGHT - self.GRID_SIZE * self.CELL_SIZE) // 2
 
-        # Initialize loading screen
         if not self.headless:
             self.loading = LoadingScreen(self.screen, self.font, width=self.WIDTH, height=self.HEIGHT)
             self.loading.show("Generating world...", progress=0.0)
 
-        # Generate the game world
         self._generate_world()
         self.reset()
 
@@ -51,34 +48,32 @@ class Main:
         for i in range(1):
             nation = Nation(self.map)
             self.nations.append(nation)
-            progress = 0.2 + (i + 1) / 10 * 0.4  # 0.2–0.6 range
+            progress = 0.2 + (i + 1) / 10 * 0.4  
             if not self.headless:
                 self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
 
         self.ai = []
         for i, nation in enumerate(self.nations):
             self.ai.append(AI(self.map, nation))
-            progress = 0.6 + (i + 1) / 10 * 0.4  # 0.6–1.0 range
+            progress = 0.6 + (i + 1) / 10 * 0.4  
             if not self.headless:
                 self.loading.show(f"Initializing AI... ({i + 1}/10)", progress=progress)
 
         self.trainer = Trainer(self)
 
     def _draw_map(self):
-        # Optional: draw a border around the map
         pygame.draw.rect(
             self.screen,
-            (255, 255, 255),  # White border
+            (255, 255, 255),
             pygame.Rect(
                 self.x_offset - 1,
                 self.y_offset - 1,
                 self.GRID_SIZE * self.CELL_SIZE + 2,
                 self.GRID_SIZE * self.CELL_SIZE + 2
             ),
-            2  # Border thickness
+            2  
         )
 
-        # Draw the map tiles
         for x in range(self.GRID_SIZE):
             for y in range(self.GRID_SIZE):
                 tile = self.map.map[x, y]
@@ -97,15 +92,11 @@ class Main:
         tile_info = TileInfo(self.tile_pos, tile)
         lines = tile_info.get_info_lines()
 
-        # Calcul de la hauteur totale du bloc de texte
-        line_height = 20  # Hauteur entre chaque ligne
+   
+        line_height = 20  
         total_height = len(lines) * line_height
 
-        # Centre d'olivier giroud
-
-        
-
-        # Affichage ligne par ligne
+     
         for i, line in enumerate(lines):
             surface, _ = self.font.render(line, (255, 255, 255))
             self.screen.blit(surface, (20, 20 + i * line_height))

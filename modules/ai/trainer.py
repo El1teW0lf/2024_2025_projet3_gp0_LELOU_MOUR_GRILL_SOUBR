@@ -3,27 +3,6 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from IPython.display import clear_output
 
-def plot(scores, mean_scores):
-    clear_output(wait=True)
-    plt.figure(figsize=(10,5))
-    plt.title('Training...')
-    plt.xlabel('Game')
-    plt.ylabel('Score')
-    plt.plot(scores, label='Score')
-    plt.plot(mean_scores, label='Mean Score')
-    plt.legend()
-    plt.show()
-
-def plot_weights(model):
-    weights = model.linear1.weight.data.cpu().numpy()
-    plt.figure(figsize=(10, 5))
-    plt.imshow(weights, cmap='viridis', aspect='auto')
-    plt.colorbar()
-    plt.title("First Layer Weights")
-    plt.xlabel("Input Neurons")
-    plt.ylabel("Hidden Neurons")
-    plt.show()
-
 class Trainer():
     def __init__(self,game):
         self.plot_scores = []
@@ -39,6 +18,9 @@ class Trainer():
 
         self.bar = tqdm(total=self.max_tick,desc=f"Epoch: {self.epoch},Record: {self.record}")
 
+        for agent in self.game.ai:
+            agent.model.load()
+
     def restart(self):
         self.epoch += 1
         for agent in self.game.ai:
@@ -50,7 +32,7 @@ class Trainer():
 
             if score > self.record:
                 self.record = score
-                #agent.model.save()
+                agent.model.save()
 
             print('Game', agent.n_games, 'Score', score, 'Record:', self.record)
 
