@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from IPython.display import clear_output
 
+<<<<<<< HEAD
 def plot(scores, mean_scores):
     """
     Plot the training scores and their running mean.
@@ -35,6 +36,8 @@ def plot_weights(model):
     plt.ylabel("Hidden Neurons")
     plt.show()
 
+=======
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
 class Trainer():
     def __init__(self, game):
         """
@@ -55,6 +58,9 @@ class Trainer():
         # Progress bar for current epoch/tick
         self.bar = tqdm(total=self.max_tick, desc=f"Epoch: {self.epoch}, Record: {self.record}")
 
+        for agent in self.game.ai:
+            agent.model.load()
+
     def restart(self):
         """
         Called at the end of each game/epoch:
@@ -74,7 +80,11 @@ class Trainer():
             # Update record score and save model if new record
             if score > self.record:
                 self.record = score
+<<<<<<< HEAD
                 # agent.model.save()  # Uncomment to save model on new record
+=======
+                agent.model.save()
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
 
             print(f'Game {agent.n_games}, Score {score}, Record: {self.record}')
 

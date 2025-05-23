@@ -17,7 +17,6 @@
 * #### Mateo → [El1teW0lf](https://github.com/El1teW0lf)
 * #### Victor → [Herasium](https://github.com/Herasium)
 * #### Benjamin → [Ben-cpu-gpu](https://github.com/Ben-cpu-gpu)
-* $\dfrac{1}{kahoot}$
 
 </details>
 

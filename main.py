@@ -5,16 +5,20 @@ from modules.ai.ai import AI
 from modules.ai.trainer import Trainer
 from modules.nation import Nation
 from modules.menus.menu_start import GameMenu
-from modules.menus.loading_screen import LoadingScreen  # Adjust path as needed
+from modules.menus.loading_screen import LoadingScreen
 from modules.menus.tileinfo import TileInfo
-
+import random
 
 class Main:
     def __init__(self, headless=False):
         # Game screen dimensions and map/grid size
         self.WIDTH, self.HEIGHT = 1792, 1008
         self.CELL_SIZE = 8
+<<<<<<< HEAD
         self.GRID_SIZE = 100  # 100x100 tile grid
+=======
+        self.GRID_SIZE = 100 
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
 
         self.headless = headless  # Run without graphics (useful for testing or training AI)
 
@@ -26,20 +30,29 @@ class Main:
             self.clock = pygame.time.Clock()
 
         self.running = True
-        self.seed = 1
+        self.seed = random.randint(0,9999999999)
         self.tick = 0
         self.day_tick = 0  # Counter for in-game day progression
 
+<<<<<<< HEAD
         # Center the map on the screen
         self.x_offset = (self.WIDTH - self.GRID_SIZE * self.CELL_SIZE) // 2
         self.y_offset = (self.HEIGHT - self.GRID_SIZE * self.CELL_SIZE) // 2
 
         # Display loading screen
+=======
+        self.x_offset = (self.WIDTH - self.GRID_SIZE * self.CELL_SIZE) // 2
+        self.y_offset = (self.HEIGHT - self.GRID_SIZE * self.CELL_SIZE) // 2
+
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
         if not self.headless:
             self.loading = LoadingScreen(self.screen, self.font, width=self.WIDTH, height=self.HEIGHT)
             self.loading.show("Generating world...", progress=0.0)
 
+<<<<<<< HEAD
         # Generate the map, nations, and AI
+=======
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
         self._generate_world()
         self.reset()
 
@@ -54,7 +67,11 @@ class Main:
         for i in range(1):  # Currently only 1 nation
             nation = Nation(self.map)
             self.nations.append(nation)
+<<<<<<< HEAD
             progress = 0.2 + (i + 1) / 10 * 0.4
+=======
+            progress = 0.2 + (i + 1) / 10 * 0.4  
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
             if not self.headless:
                 self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
 
@@ -62,7 +79,11 @@ class Main:
         self.ai = []
         for i, nation in enumerate(self.nations):
             self.ai.append(AI(self.map, nation))
+<<<<<<< HEAD
             progress = 0.6 + (i + 1) / 10 * 0.4
+=======
+            progress = 0.6 + (i + 1) / 10 * 0.4  
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
             if not self.headless:
                 self.loading.show(f"Initializing AI... ({i + 1}/10)", progress=progress)
 
@@ -70,7 +91,10 @@ class Main:
         self.trainer = Trainer(self)
 
     def _draw_map(self):
+<<<<<<< HEAD
         # Draw a white border around the map
+=======
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
         pygame.draw.rect(
             self.screen,
             (255, 255, 255),
@@ -80,10 +104,13 @@ class Main:
                 self.GRID_SIZE * self.CELL_SIZE + 2,
                 self.GRID_SIZE * self.CELL_SIZE + 2
             ),
-            2  # Border thickness
+            2  
         )
 
+<<<<<<< HEAD
         # Render each tile of the map with its color
+=======
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
         for x in range(self.GRID_SIZE):
             for y in range(self.GRID_SIZE):
                 tile = self.map.map[x, y]
@@ -102,9 +129,17 @@ class Main:
         tile_info = TileInfo(self.tile_pos, tile)
         lines = tile_info.get_info_lines()
 
+<<<<<<< HEAD
         line_height = 20  # Distance between lines
         total_height = len(lines) * line_height
 
+=======
+   
+        line_height = 20  
+        total_height = len(lines) * line_height
+
+     
+>>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
         for i, line in enumerate(lines):
             surface, _ = self.font.render(line, (255, 255, 255))
             self.screen.blit(surface, (20, 20 + i * line_height))
