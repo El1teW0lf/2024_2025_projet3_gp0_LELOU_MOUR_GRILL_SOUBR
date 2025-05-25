@@ -108,9 +108,7 @@ class AI:
                 if tile in can_conquer:
                     # Weighted sum of normalized biome code, tile value, and population
                     mask[y, x] = (
-                        ((biomes[tile.biome]["code"] + 1) / 7) * 0.3 +  # biome normalized + weighted
-                        ((tile.value + 1) / 1000) * 0.5 +                # value normalized + weighted
-                        ((tile.pop + 1) / 100) * 0.2                     # population normalized + weighted
+                        tile.value/2000             # value normalized + weighted                 # population normalized + weighted
                     )
         return mask
 

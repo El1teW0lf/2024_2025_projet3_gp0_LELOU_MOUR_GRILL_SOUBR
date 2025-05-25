@@ -1,5 +1,5 @@
 import random
-
+import math
 
 class Nation:
     def __init__(self, map):
@@ -76,8 +76,8 @@ class Nation:
 
     def _get_score(self):
         # Computes the score of a nation based on resources and tile values
-        self.score = (self.ressources["money"] + self.ressources["population"]) / 1000
-        multiplier = 1 + sum(tile.value for tile in self.tiles)
+        self.score = ((self.ressources["money"] + self.ressources["population"]) / 100000)**2
+        multiplier = 1 + sum(tile.value for tile in self.tiles)/len(self.tiles)
         self.score *= multiplier
 
     def _possible_conquer(self):
@@ -91,6 +91,19 @@ class Nation:
                 if new_tile.value <= self.ressources["money"] and new_tile.biome != "water":
                     possibles.append(new_tile)
         return possibles
+
+    def _is_stuck(self):
+        #Check if a tile is tiles can still be conquered in the futur.
+        possibles = []
+        for tile in self.tiles:
+            directions = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+            for dx, dy in directions:
+                x, y = max(0, min(99, tile.x + dx)), max(0, min(99, tile.y + dy))
+                new_tile = self.map.map[x, y]
+                if new_tile.biome != "water":
+                    possibles.append(new_tile)
+        return len(possibles)<=0
+
 
     def tick(self):
         # Called every turn to update economic and scoring state

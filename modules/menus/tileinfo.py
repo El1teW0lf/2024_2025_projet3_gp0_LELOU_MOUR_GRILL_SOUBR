@@ -19,7 +19,7 @@ class TileInfo:
             lines.append("--- Nation Info ---")
             lines.append(f"Population : {self.tile.nation.ressources['population']}")  # Total nation population
             lines.append(f"Money : {int(self.tile.nation.ressources['money'])}")  # Current money of the nation
-            lines.append(f"Score : {int(self.tile.nation.score)}")  # Calculated score for the nation
+            lines.append(f"Score : {int(self.tile.nation.score*10000)/10000}")  # Calculated score for the nation
 
         return lines  # Return the list of info strings
 
