@@ -18,6 +18,8 @@
 * #### Victor → [Herasium](https://github.com/Herasium)
 * #### Benjamin → [Ben-cpu-gpu](https://github.com/Ben-cpu-gpu)
 
+https://www.figma.com/proto/FMm4FLVMAzEQRkv2Bk8GzK/NR-Presentation?node-id=2-82&p=f&t=INMwRVpAUzxr7nas-1&scaling=contain&content-scaling=fixed&page-id=0%3A1
+
 </details>
 
 <details>
