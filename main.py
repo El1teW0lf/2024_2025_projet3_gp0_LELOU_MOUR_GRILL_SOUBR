@@ -16,7 +16,11 @@ class Main:
         self.screen = get_monitors()
         self.WIDTH, self.HEIGHT = self.screen.width * 0.95, self.screen.height * 0.95
         self.CELL_SIZE = 8
+<<<<<<< HEAD
         self.GRID_SIZE = 100  # 100x100 tile grid
+=======
+        self.GRID_SIZE = 100 
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
 
         self.headless = headless  # Run without graphics (useful for testing or training AI)
 
@@ -31,17 +35,27 @@ class Main:
         self.seed = random.randint(0,9999999999)
         self.tick = 0
         self.day_tick = 0  # Counter for in-game day progression
+        self.nation_count = 10
 
+<<<<<<< HEAD
         # Center the map on the screen
         self.x_offset = (self.WIDTH - self.GRID_SIZE * self.CELL_SIZE) // 2
         self.y_offset = (self.HEIGHT - self.GRID_SIZE * self.CELL_SIZE) // 2
 
         # Display loading screen
+=======
+        self.x_offset = (self.WIDTH - self.GRID_SIZE * self.CELL_SIZE) // 2
+        self.y_offset = (self.HEIGHT - self.GRID_SIZE * self.CELL_SIZE) // 2
+
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
         if not self.headless:
             self.loading = LoadingScreen(self.screen, self.font, width=self.WIDTH, height=self.HEIGHT)
             self.loading.show("Generating world...", progress=0.0)
 
+<<<<<<< HEAD
         # Generate the map, nations, and AI
+=======
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
         self._generate_world()
         self.reset()
 
@@ -53,10 +67,14 @@ class Main:
 
         # Create nations and update progress on the loading screen
         self.nations = []
-        for i in range(1):  # Currently only 1 nation
+        for i in range(self.nation_count):  # Currently only 1 nation
             nation = Nation(self.map)
             self.nations.append(nation)
+<<<<<<< HEAD
             progress = 0.2 + (i + 1) / 10 * 0.4
+=======
+            progress = 0.2 + (i + 1) / 10 * 0.4  
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
             if not self.headless:
                 self.loading.show(f"Spawning nations... ({i + 1}/10)", progress=progress)
 
@@ -64,7 +82,11 @@ class Main:
         self.ai = []
         for i, nation in enumerate(self.nations):
             self.ai.append(AI(self.map, nation))
+<<<<<<< HEAD
             progress = 0.6 + (i + 1) / 10 * 0.4
+=======
+            progress = 0.6 + (i + 1) / 10 * 0.4  
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
             if not self.headless:
                 self.loading.show(f"Initializing AI... ({i + 1}/10)", progress=progress)
 
@@ -72,7 +94,10 @@ class Main:
         self.trainer = Trainer(self)
 
     def _draw_map(self):
+<<<<<<< HEAD
         # Draw a white border around the map
+=======
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
         pygame.draw.rect(
             self.screen,
             (255, 255, 255),
@@ -85,7 +110,10 @@ class Main:
             2  
         )
 
+<<<<<<< HEAD
         # Render each tile of the map with its color
+=======
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
         for x in range(self.GRID_SIZE):
             for y in range(self.GRID_SIZE):
                 tile = self.map.map[x, y]
@@ -104,9 +132,17 @@ class Main:
         tile_info = TileInfo(self.tile_pos, tile)
         lines = tile_info.get_info_lines()
 
+<<<<<<< HEAD
         line_height = 20  # Distance between lines
         total_height = len(lines) * line_height
 
+=======
+   
+        line_height = 20  
+        total_height = len(lines) * line_height
+
+     
+>>>>>>> 54d1d137b71c320ddcdc8f3abfda0195f2364d1d
         for i, line in enumerate(lines):
             surface, _ = self.font.render(line, (255, 255, 255))
             self.screen.blit(surface, (20, 20 + i * line_height))
@@ -157,12 +193,13 @@ class Main:
 
     def reset(self):
         # Regenerate the map and nations
+        self.seed = random.randint(0,9999999999)
         self.map = Map(self.seed)
         if not self.headless:
             self.loading.show("Generating world...", progress=0.2)
 
         self.nations = []
-        for i in range(1):
+        for i in range(self.nation_count):
             nation = Nation(self.map)
             self.nations.append(nation)
             progress = 0.2 + (i + 1) / 10 * 0.4

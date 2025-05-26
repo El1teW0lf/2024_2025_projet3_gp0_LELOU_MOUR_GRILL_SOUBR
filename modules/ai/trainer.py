@@ -3,41 +3,6 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from IPython.display import clear_output
 
-<<<<<<< HEAD
-def plot(scores, mean_scores):
-    """
-    Plot the training scores and their running mean.
-
-    :param scores: List of scores per game
-    :param mean_scores: List of mean scores over games
-    """
-    clear_output(wait=True)  # Clear previous plot in Jupyter
-    plt.figure(figsize=(10,5))
-    plt.title('Training...')
-    plt.xlabel('Game')
-    plt.ylabel('Score')
-    plt.plot(scores, label='Score')
-    plt.plot(mean_scores, label='Mean Score')
-    plt.legend()
-    plt.show()
-
-def plot_weights(model):
-    """
-    Visualize weights of the model's first linear layer.
-
-    :param model: Neural network model with attribute linear1.weight
-    """
-    weights = model.linear1.weight.data.cpu().numpy()
-    plt.figure(figsize=(10, 5))
-    plt.imshow(weights, cmap='viridis', aspect='auto')
-    plt.colorbar()
-    plt.title("First Layer Weights")
-    plt.xlabel("Input Neurons")
-    plt.ylabel("Hidden Neurons")
-    plt.show()
-
-=======
->>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
 class Trainer():
     def __init__(self, game):
         """
@@ -71,7 +36,7 @@ class Trainer():
         """
         self.epoch += 1
         for agent in self.game.ai:
-            score = agent.nation.score
+            score = agent.nation.score / (self.current_tick/self.max_tick)
             agent.n_games += 1
 
             # Train the agent with experience replay
@@ -80,11 +45,7 @@ class Trainer():
             # Update record score and save model if new record
             if score > self.record:
                 self.record = score
-<<<<<<< HEAD
-                # agent.model.save()  # Uncomment to save model on new record
-=======
                 agent.model.save()
->>>>>>> 520d51639b16285b0bb77deade606e55499a27fd
 
             print(f'Game {agent.n_games}, Score {score}, Record: {self.record}')
 
@@ -154,9 +115,10 @@ class Trainer():
                 agent.remember(state_old_flat, final_move, reward, state_new_flat, done)
 
                 # Update progress bar
-                self.bar.update()
+        self.bar.update()
 
-        if done:
+        if done or nation._is_stuck():
             # Restart training/game at end of epoch
             self.restart()
+            self.bar.close()
             return
