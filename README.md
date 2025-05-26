@@ -32,6 +32,6 @@
 
 > ![imagee](https://github.com/El1teW0lf/2024_2025__p04_projet2.5_n1/blob/main/folder/stat_langage.svg)
 
-> ### VOUS ÊTES OBLIGES D'INSTALLER TOUS LES MODULES : ```requirements.txt```
+> ### VOUS ÊTES OBLIGES D'INSTALLER TOUS LES MODULES : [```requirements.txt```](https://github.com/El1teW0lf/2024_2025_projet3_gp0_LELOU_MOUR_GRILL_SOUBR/blob/main/requirements.txt)
 
 </details>
