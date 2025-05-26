@@ -2,13 +2,17 @@ import pygame
 import numpy as np
 from PIL import Image
 from modules.map import Map
+from screeninfo import get_monitors
 
 class GameMenu:
     def __init__(self, width=1792, height=1008):
         pygame.init()
 
-        # Window and display config
-        self.WIDTH, self.HEIGHT = width, height
+        for m in get_monitors():
+            if m.is_primary:
+                self.screen_width = m.width
+                self.screen_height = m.height
+        self.WIDTH, self.HEIGHT = int(round(self.screen_width * 0.9, 0)), int(round(self.screen_height * 0.9, 0))
         self.CELL_SIZE = self.WIDTH // 100  # Presumed grid scaling (not used directly here)
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Not your life.")  # Window title
